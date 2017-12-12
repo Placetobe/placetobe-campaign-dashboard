@@ -1,0 +1,159 @@
+Polymer({
+    is: 'can-api',
+    properties: {
+        method: String,
+        route: {
+            type: String,
+        },
+        requestheaders: {
+            type: String,
+            computed: 'getRequestHeaders(method, route, auth)'
+        },
+        url: {
+            type: String,
+            notify: true,
+            computed: 'getApiURL(method, route)'
+        },
+        body: {
+            type: Object,
+            notify: true
+        },
+        error: {
+            type: Object,
+            notify: true
+        },
+        loggedIn: {
+            type: Object,
+            notify: true,
+            computed: 'getLoggedIn(userToken, userId)'
+        },
+        auth: {
+            type: Boolean,
+            notify: true,
+            value: false
+        },
+        contentType: {
+            type: String,
+            value: 'application/json'
+        },
+        handleAs: {
+            type: String,
+            value: 'json'
+        },
+        downloadFile: {
+            type: Boolean,
+            value: false,
+            observer: 'downloadFileChanged'
+        },
+        lastResponse: {
+            type: Object,
+            notify: true
+        },
+        isAuto: {
+            type: Boolean,
+            computed: 'computeAuto(auto, auth)'
+        },
+        auto: {
+            type: Boolean,
+            value: false
+        },
+        loading: {
+            type: Boolean,
+            value: true,
+            notify: true
+
+        },
+        downloadedFilename: {
+            type: String,
+            value: 'filename.ext'
+        },
+        responseStatus: {
+            type: Object,
+            notify: true
+        }
+    },
+    downloadFileChanged: function () {
+        if (this.downloadFile) {
+            this.set('handleAs', 'arraybuffer');
+        }
+    },
+    computeAuto: function (auto, auth) {
+        if (auto && !auth) {
+            return true;
+        }
+        if (auto && auth && window.localStorage.CanSessionToken) {
+            return true;
+        }
+        if (auto && auth && !window.localStorage.CanSessionToken) {
+            console.error('Tried getting an authorised URL without having a login token set.');
+            return true;
+        }
+        return false;
+    },
+    send: function () {
+        this._setStatusResponseObject('loading');
+        this.$.ajax.generateRequest();
+        return this.fire('request', {url: this.url, method: this.method, body: this.body});
+    },
+    _handleResponse: function (evt, data) {
+        if (this.downloadFile) {
+            return this._handleDownload(evt, data);
+        }
+        this._setStatusResponseObject('success');
+        return this.fire('response', this.lastResponse || null);
+    },
+    _handleError: function (evt, data) {
+        if (this.downloadFile) {
+            return this._handleDownloadError(evt, data);
+        }
+        this._setStatusResponseObject('failed', 'Opslaan mislukt' + ((data.request.xhr.response && data.request.xhr.response.error[0]) ? ': '+data.request.xhr.response.error[0].message : ''));
+        this.fire('error', data.request.xhr.response);
+        if(data.request.xhr.response.error[0].message == 'Access token not issued for this ip address') this.fire('iron-signal', {name: 'ip-changed', data: data.request.xhr.response.error});
+    },
+    _handleDownload: function (evt, data) {
+        var _self = this;
+        var a = document.createElement('a');
+        document.body.appendChild(a);
+        a.setAttribute('hidden', true);
+        var blob = new Blob([data.xhr.response], {type: _self.contentType});
+        if(window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, _self.downloadedFilename);
+        } else {
+            var url = window.URL.createObjectURL(blob);
+            a.href = url;
+            a.download = _self.downloadedFilename;
+            a.click();
+            setTimeout(function(){
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 100);
+        }
+        return this.fire('response', this.lastResponse || null);
+    },
+    _handleDownloadError: function () {
+        alert('Het bestand kon niet worden gedownload');
+    },
+    getRequestHeaders: function (method, route, auth) {
+        if (!auth || !window.localStorage.CanSessionToken) return {};
+        return {
+            'authorization': 'Bearer ' + window.localStorage.CanSessionToken
+        };
+    },
+    getApiURL: function () {
+        var apiurl = (window.API_ROOT || 'http://api.crowdaboutnow.eu/') + this.route;
+        apiurl.replace(':userId', window.localStorage.CanSessionUserId);
+        return apiurl;
+    },
+    getLoggedIn: function () {
+        return !!(window.localStorage.CanSessionToken && window.localStorage.CanSessionUserId);
+    },
+    _setStatusResponseObject: function(status, error) {
+        if(this.method.toLowerCase() == 'get') return;
+        this.set('responseStatus', {
+            status: status,
+            error: error,
+            method: this.method.toLowerCase(),
+            route: this.route
+        });
+    }
+});

@@ -1,0 +1,62 @@
+<!doctype html>
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../can-api/can-api.html">
+<link rel="import" href="../can-button/can-button.html">
+<link rel="import" href="../can-warning/can-warning.html">
+<link rel="import" href="../can-api-feedback/can-api-feedback.html">
+
+<dom-module id="can-form">
+    <template>
+
+        <template is="dom-if" if="[[!useWithCaas]]" restamp="true">
+
+            <can-api
+                auto="{{auto}}"
+                auth="[[auth]]"
+                method="{{method}}"
+                route="{{apipath}}"
+                body="{{formdata}}"
+                on-response="_handleResponse"
+                on-error="_handleError"
+                response-status="{{responseStatus}}">
+            </can-api>
+
+        </template>
+
+        <template is="dom-if" if="[[disabled]]">
+            <can-warning
+                hidden$="[[!disabledWarning]]">
+                [[disabledWarning]]
+            </can-warning>
+        </template>
+
+        <form
+            disabled$="[[disabled]]"
+            class="can-form"
+            on-submit="submit"
+            name="form">
+
+            <content></content>
+
+            <template is="dom-if" if="[[!hidesubmitbutton]]" restamp="true">
+
+                <can-button
+                    small="{{smallbutton}}"
+                    on-button-tap="submit"
+                    disabled="[[!valid]]">
+                    {{submitlabel}}
+                </can-button>
+
+            </template>
+
+            <can-api-feedback
+                hidden$="[[hideFeedback]]"
+                response-status="[[responseStatus]]">
+            </can-api-feedback>
+
+        </form>
+
+    </template>
+
+    <script src="can-form.js"></script>
+</dom-module>

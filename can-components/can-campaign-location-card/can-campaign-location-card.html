@@ -1,0 +1,40 @@
+<!doctype html>
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/google-map/google-map.html">
+<link rel="import" href="../can-card/can-card.html">
+
+<dom-module id="can-campaign-location-card">
+
+    <template>
+        <can-card>
+            <header>
+                <h3>Locatie</h3>
+            </header>
+            <article>
+                <google-map
+                    disable-zoom
+                    drag-events
+                    latitude="[[geocode.lat]]"
+                    longitude="[[geocode.lng]]"
+                    api-key="AIzaSyB-DfqazxVFeBB-xvRmJuidsIrQJIfvLeU"
+                    clickEvents=false
+                    disableZoom=true
+                    zoom="10"
+                    mouseEvents=false>
+                        <google-map-marker
+                            latitude="[[geocode.lat]]"
+                            longitude="[[geocode.lng]]"
+                            draggable="false"
+                            title="maptitle">
+                        </google-map-marker>
+                </google-map>
+            </article>
+            <footer>
+                <content></content>
+            </footer>
+        </can-card>
+    </template>
+
+    <script src="can-campaign-location-card.js"></script>
+
+</dom-module>

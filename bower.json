@@ -13,9 +13,15 @@
     "moment": "~2.14.1",
     "silk-editor": "1.1.0",
     "google-youtube": "GoogleWebComponents/google-youtube#~1.1.2",
+    "caas-campaign-incentives": "CaaSElements/caas-campaign-incentives",
+    "caas-prospects": "CaaSElements/caas-prospects",
+    "caas-accountmanagers": "CaaSElements/caas-accountmanagers",
+    "google-map": "GoogleWebComponents/google-map#~1.1.3",
+    "accounting.js": "~0.4.1",
     "caas-campaign-types": "CaaSElements/caas-campaign-types",
-    "vimeo-video": "*",
-
+    "iron-overlay-behavior": "PolymerElements/iron-overlay-behavior#~1.2.0",
+    "silk-image": "*",
+    "vimeo-video": "*"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
@@ -23,5 +29,8 @@
     "web-component-tester": "^4.0.0",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
     "caas-session": "CaasElements/caas-session"
+  },
+  "resolutions": {
+    "moment": "~2.14.1"
   }
 }

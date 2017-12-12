@@ -1,0 +1,85 @@
+<!doctype html>
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../can-api/can-api.html">
+<link rel="import" href="../can-button/can-button.html">
+<link rel="import" href="../can-list/can-list.html">
+<link rel="import" href="../can-card/can-card.html">
+<link rel="import" href="../can-list-item/can-list-item.html">
+
+<dom-module id="can-contracts-table">
+    
+    <template>
+
+        <can-api
+            auth
+            auto="[[campaignId]]"
+            route="/entrepreneurs/[[campaignId]]/contracts"
+            method="GET"
+            on-error="_handleError"
+            on-response="_handleResponse">
+        </can-api>
+
+        <can-api
+            download-file
+            auth
+            id="download-contract"
+            content-type="application/pdf"
+            downloaded-filename="contract.pdf"
+            route="/entrepreneurs/[[campaignId]]/contracts/[[currentContractId]]/download"
+            method="GET">
+        </can-api>
+
+        
+        <can-card>
+            <header>
+                <h3>
+                    Investeerders
+                </h3>
+                <p>Lukt het niet om een contract te downloaden? Check of de pop-up blocker van je browser uit staat.</p>
+            </header>
+            <article>
+                <can-list>
+
+                    <template
+                        is="dom-repeat"
+                        items="[[contracts]]">
+                        <can-list-item expandable>
+                            <header>
+                                <h5>
+                                    [[item.firstName]] [[item.lastName]],
+                                    <strong>
+                                        <can-number euros="[[item.investment]]"></can-number>
+                                    </strong>
+                                </h5>
+                            </header>
+                            <article>
+                                <ul>
+                                    <li>
+                                        <strong>Email Adres: </strong>
+                                        <a href="mailto:[[item.emailAddress]]">[[item.emailAddress]]</a>
+                                    </li>
+                                    <li>
+                                        <strong>Beloning: </strong>
+                                        [[item.incentive]]
+                                    </li>
+                                    <li>
+                                        <can-button
+                                            download
+                                            on-tap="_downloadFile"
+                                            contract-id="[[item.id]]">
+                                            download contract
+                                        </can-button>
+                                    </li>
+                                </ul>
+                            </article>
+                        </can-list-item>
+                    </template>
+                </can-list>
+            </article>
+        </can-card>
+
+    </template>
+    
+    <script src="can-contracts-table.js"></script>
+
+</dom-module>

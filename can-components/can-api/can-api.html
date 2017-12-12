@@ -1,0 +1,30 @@
+<!doctype html>
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../../bower_components/iron-signals/iron-signals.html">
+
+<dom-module id="can-api">
+
+    <template>
+
+        <iron-ajax
+            id="ajax"
+            url="{{url}}"
+            method="{{method}}"
+            handle-as="{{handleAs}}"
+            headers="{{requestheaders}}"
+            auto="{{isAuto}}"
+            content-type="{{contentType}}"
+            body="{{body}}"
+            on-response="_handleResponse"
+            last-response="{{lastResponse}}"
+            on-error="_handleError"
+            last-error="{{error}}"
+            loading="{{loading}}"
+        ></iron-ajax>
+
+    </template>
+
+    <script src="can-api.js"></script>
+
+</dom-module>

@@ -1,0 +1,120 @@
+<!doctype html>
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../can-button/can-button.html">
+<link rel="import" href="../can-textinput/can-textinput.html">
+<link rel="import" href="../can-selectbox/can-selectbox.html">
+<link rel="import" href="../can-textarea/can-textarea.html">
+<link rel="import" href="../can-card/can-card.html">
+<link rel="import" href="../can-checkbox/can-checkbox.html">
+<link rel="import" href="../can-loader/can-loader.html">
+<link rel="import" href="../can-api-feedback/can-api-feedback.html">
+
+
+<dom-module id="can-incentive-input">
+    <template>
+
+        <can-card text-align="left">
+            <header>
+                <h4>Beloning #{{number}}</h4>
+
+            </header>
+
+            <article>
+
+                <can-form
+                    use-with-caas
+                    id="incientive-[[id]]-form"
+                    valid="{{valid}}"
+                    response-status="[[responseStatus]]"
+                    on-caas-submit="updateIncentive"
+                    incentive-id="{{id}}">
+
+                    <can-button remove on-tap="deleteIncentive" incentive-id="{{id}}">verwijder</can-button>
+
+                    <can-textinput
+                        name="title"
+                        type="text"
+                        value="{{title}}"
+                        placeholder="Titel van de beloning (optioneel)"
+
+                        description="Bedenk een pakkende titel voor je beloning. Let op: benoem in de titel niet het minimaal benodigde bedrag voor deze beloning, deze wordt standaard aan de titel toegevoegd."
+                        on-value-changed="_setChanged">
+                    </can-textinput>
+
+                    <can-textarea
+                        name="message"
+                        value="{{message}}"
+                        placeholder="Geef hier een omschrijving van je beloning"
+                        description="Met beloningen kun je veel aandacht genereren en twijfelaars over de streep trekken. Verzin een originele manier waarop je crowd over je gaat praten. Maak het exclusief en persoonijk."
+                        required
+                        on-value-changed="_setChanged">
+                    </can-textarea>
+
+                    <br>
+
+                    <can-textinput
+                        name="minimumInvestment"
+                        type="number"
+                        min="[[selectedCampaignType.minimumInvestment]]"
+                        max="[[selectedCampaignType.maximumInvestment]]"
+                        value="{{minimumInvestment}}"
+                        placeholder="minimale investering? (€)"
+                        required
+                        on-value-changed="_setChanged">
+                    </can-textinput>
+
+                    <can-selectbox
+                        name="contractTypeId"
+                        value="{{forBusiness}}"
+                        placeholder="Voor bedrijven of particulieren"
+                        options="[[businessOptions]]"
+                        on-value-changed="_setChanged">
+                    </can-selectbox>
+
+                    <can-textinput
+                        name="costs"
+                        type="number"
+                        required
+                        min="0"
+                        value="{{costs}}"
+                        placeholder="aanvullende kosten (verzondkosten e.d.) (€)"
+                        pattern="^[0-9]([0-9]+|,|)([0-9]+|)$"
+                        on-value-changed="_setChanged">
+                    </can-textinput>
+
+                    <template is="dom-if" if="[[campaignTypeOptions]]">
+
+                      <can-selectbox
+                          name="contractTypeId"
+                          value="{{contractTypeId}}"
+                          placeholder="Campagne type"
+                          options="[[campaignTypeOptions]]"
+                          on-value-changed="_setChanged">
+                      </can-selectbox>
+
+                    </template>
+
+
+                    <can-checkbox checked="{{unlimitedStock}}">Oneindig aantal beloningen</can-checkbox>
+
+                    <template is="dom-if" if="[[!unlimitedStock]]">
+                        <can-textinput
+                            name="inStock"
+                            type="number"
+                            min="[[minimumStock]]"
+                            value="{{inStock}}"
+                            placeholder="Hoeveel keer kun je deze beloning aanbieden?"
+                            pattern="^[0-9]([0-9]+|,|)([0-9]+|)$"
+                            on-value-changed="_setChanged">
+                        </can-textinput>
+                    </template>
+
+                </can-form>
+
+            </article>
+
+        </can-card>
+
+    </template>
+    <script src="can-incentive-input.js"></script>
+</dom-module>
