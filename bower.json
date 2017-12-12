@@ -9,7 +9,12 @@
     "placetobe-signin-card": "Placetobe/placetobe-signin-card",
     "placetobe-card": "Placetobe/placetobe-card",
     "placetobe-input-box": "Placetobe/placetobe-input-box",
-    "placetobe-mailinglist-subscribe-form": "Placetobe/placetobe-mailinglist-subscribe-form"
+    "placetobe-mailinglist-subscribe-form": "Placetobe/placetobe-mailinglist-subscribe-form",
+    "moment": "~2.14.1",
+    "silk-editor": "1.1.0",
+    "google-youtube": "GoogleWebComponents/google-youtube#~1.1.2",
+    "caas-campaign-types": "CaaSElements/caas-campaign-types",
+    "vimeo-video": "*",
 
   },
   "devDependencies": {
