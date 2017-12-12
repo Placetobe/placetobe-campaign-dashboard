@@ -1,0 +1,101 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../placetobe-styles/placetobe-styles.html">
+<link rel="import" href="../caas-auth-behavior/caas-auth-behavior.html">
+
+
+<link rel="import" href="../placetobe-signin-card/placetobe-signin-card.html">
+<link rel="import" href="../placetobe-card/placetobe-card.html">
+<link rel="import" href="../placetobe-input-box/placetobe-input-box.html">
+<link rel="import" href="../placetobe-button/placetobe-button.html">
+
+<!--
+`placetobe-campaign-dashboard`
+Placetobe dashboard for campaigns
+
+@demo demo/index.html
+-->
+
+<dom-module id="placetobe-campaign-dashboard">
+  <template>
+    <style>
+      :host {
+        display: block;
+        @apply --placetobe-flex-layout--vertical;
+        @apply --placetobe-cross-align--center;
+      }
+      placetobe-signin-card {
+        width: 100%;
+        max-width: 540px;
+      }
+      placetobe-signin-card[hidden] {
+        display: none;
+      }
+      placetobe-card {
+        width: 100%;
+        max-width: 540px;
+        display: flex;
+
+        flex-direction: horizontal;
+        flex-basis: wrap;
+      }
+      :host ul {
+        list-style: none;
+      }
+      li {
+        padding-bottom: 5px;
+        display: flex;
+        flex-direction: horizontal;
+        flex-basis: wrap;
+      }
+      placetobe-input-box {
+        min-width: 88px;
+       --input-box-disabled-background-color: var(-placetobe-color-yellow);
+      }
+      placetobe-input-box:last-child {
+        padding-left: 5px;
+      }
+    </style>
+
+    <placetobe-signin-card
+      hidden$="[[signedIn]]"
+      id="signInCard"
+      api-endpoint="[[apiEndpoint]]"
+      signed-in="{{signedIn}}"
+      access-token="{{accessToken}}"
+      user-role="ondernemer"
+    ></placetobe-signin-card>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'placetobe-campaign-dashboard',
+      behaviors: [CaasAuthBehavior],
+
+      properties: {
+        apiEndpoint: {
+          type: String,
+          value: null
+        },
+
+        userId: {
+          type: String
+        },
+
+        signedIn: {
+          type: Boolean,
+          value: false
+        }
+      },
+      observers: [
+        '_setUserParameters(_tokenData.data.*)'
+      ],
+
+      _setUserParameters: function (tokenDataChange) {
+        this.userId = this._tokenData.data.userId;
+      }
+
+    });
+  </script>
+</dom-module>
