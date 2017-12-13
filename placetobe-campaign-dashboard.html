@@ -130,9 +130,13 @@ Placetobe dashboard for campaigns
                         <article>
                             <can-form
                                 auth
+                                access-token="{{accessToken}}"
+                                api-endpoint="[[apiEndpoint]]"
                                 disabled$="[[!editable]]"
                                 disabled-warning="[[notEditableWarning]]"
                                 apipath="entrepreneurs/[[campaign.id]]/basics"
+                                access-token="{{accessToken}}"
+                                api-endpoint="[[apiEndpoint]]"
                                 formdata="[[campaign]]"
                                 id="basics-form"
                                 on-error="handleBasicsError"
@@ -183,6 +187,8 @@ Placetobe dashboard for campaigns
 
                             <can-form
                                 auth
+                                access-token="{{accessToken}}"
+                                api-endpoint="[[apiEndpoint]]"
                                 disabled$="[[!editable]]"
                                 disabled-warning="[[notEditableWarning]]"
                                 formdata="[[campaign]]"
@@ -211,6 +217,8 @@ Placetobe dashboard for campaigns
 
                             <can-form
                                 auth
+                                access-token="{{accessToken}}"
+                                api-endpoint="[[apiEndpoint]]"
                                 disabled$="[[!editable]]"
                                 disabled-warning="[[notEditableWarning]]"
                                 apipath="entrepreneurs/[[campaign.id]]/videourl"
@@ -299,6 +307,8 @@ Placetobe dashboard for campaigns
                         <article>
                             <can-form
                                 auth
+                                access-token="{{accessToken}}"
+                                api-endpoint="[[apiEndpoint]]"
                                 disabled$="[[!editable]]"
                                 disabled-warning="[[notEditableWarning]]"
                                 apipath="entrepreneurs/[[campaign.id]]/sociallinks"
@@ -411,6 +421,8 @@ Placetobe dashboard for campaigns
 
                             <can-form
                                 auth
+                                access-token="{{accessToken}}"
+                                api-endpoint="[[apiEndpoint]]"
                                 disabled$="[[!editable]]"
                                 disabled-warning="[[notEditableWarning]]"
                                 apipath="entrepreneurs/[[campaign.id]]/requiredandmaxfunding"
@@ -459,6 +471,8 @@ Placetobe dashboard for campaigns
 
                             <can-form
                                 auth
+                                access-token="{{accessToken}}"
+                                api-endpoint="[[apiEndpoint]]"
                                 disabled$="[[!editable]]"
                                 disabled-warning="[[notEditableWarning]]"
                                 formdata="{{campaign}}"
@@ -566,6 +580,8 @@ Placetobe dashboard for campaigns
 
                             <can-form
                                 use-with-caas
+                                access-token="{{accessToken}}"
+                                api-endpoint="[[apiEndpoint]]"
                                 disabled$="[[!editable]]"
                                 disabled-warning="[[notEditableWarning]]"
                                 id="requiredFunding-form"
@@ -632,6 +648,8 @@ Placetobe dashboard for campaigns
 
                                 <can-form
                                     auth
+                                    access-token="{{accessToken}}"
+                                    api-endpoint="[[apiEndpoint]]"
                                     disabled$="[[!editable]]"
                                     disabled-warning="[[notEditableWarning]]"
                                     apipath="entrepreneurs/[[campaign.id]]/certificatepassingdate"
@@ -938,7 +956,7 @@ Placetobe dashboard for campaigns
         ></silk-editor>
         <can-button on-tap="saveCampaignText">Opslaan</can-button>
         <can-button small on-tap="requestCloseTextEditor">annuleren</can-button>
-    </can-overlay>
+    </can-overlay> -->
 
     </template>
 

@@ -59,7 +59,7 @@ Polymer({
         },
         isAuto: {
             type: Boolean,
-            computed: 'computeAuto(auto, auth)'
+            computed: 'computeAuto(auto, auth, accessToken)'
         },
         auto: {
             type: Boolean,
@@ -89,10 +89,10 @@ Polymer({
         if (auto && !auth) {
             return true;
         }
-        if (auto && auth && window.localStorage.CanSessionToken) {
+        if (auto && auth && this.accessToken) {
             return true;
         }
-        if (auto && auth && !window.localStorage.CanSessionToken) {
+        if (auto && auth && !this.accessToken) {
             console.error('Tried getting an authorised URL without having a login token set.');
             return true;
         }
