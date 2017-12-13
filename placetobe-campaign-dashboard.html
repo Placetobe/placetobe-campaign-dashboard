@@ -1,12 +1,15 @@
 <link rel="import" href="../polymer/polymer.html">
 
 <link rel="import" href="../placetobe-styles/placetobe-styles.html">
+<link rel="import" href="../placetobe-styles/placetobe-dashboard-styles.html">
+
 <link rel="import" href="../caas-auth-behavior/caas-auth-behavior.html">
 <link rel="import" href="../placetobe-signin-card/placetobe-signin-card.html">
 <link rel="import" href="../placetobe-card/placetobe-card.html">
 <link rel="import" href="../placetobe-input-box/placetobe-input-box.html">
 <link rel="import" href="../placetobe-button/placetobe-button.html">
 
+<link rel="import" href="../placetobe-navigation-bar/placetobe-navigation-bar.html">
 
 <link rel="import" href="can-api/can-api.html">
 
@@ -50,7 +53,7 @@ Placetobe dashboard for campaigns
 
 <dom-module id="placetobe-campaign-dashboard">
   <template>
-    <style>
+    <style include="placetobe-dashboard-styles">
       :host {
         display: block;
         @apply --placetobe-flex-layout--vertical;
@@ -98,29 +101,78 @@ Placetobe dashboard for campaigns
       user-role="ondernemer"
     ></placetobe-signin-card>
 
-
     <template is="dom-if" if="[[signedIn]]" restamp="true">
 
-        <can-api
-            auth
-            id="campaignAjax"
-            auto="[[signedIn]]"
-            route="entrepreneurs/[[userId]]"
-            method="GET"
-            last-response="{{campaign}}"
-            access-token="{{accessToken}}"
-            api-endpoint="[[apiEndpoint]]"
-            >
-        </can-api>
+      <can-api
+        auth
+        id="campaignAjax"
+        auto="[[signedIn]]"
+        route="entrepreneurs/[[userId]]"
+        method="GET"
+        last-response="{{campaign}}"
+        access-token="{{accessToken}}"
+        api-endpoint="[[apiEndpoint]]"
+      ></can-api>
 
 
-                    <can-campaign-status
-                        slug="[[campaign.slug]]"
-                        percentage-completed="[[percentageCompleted]]">
-                    </can-campaign-status>
+      <can-campaign-status
+        slug="[[campaign.slug]]"
+        percentage-completed="[[percentageCompleted]]">
+      </can-campaign-status>
 
+      <placetobe-navigation-bar>
+        <li slot="navigation">Dashboard Ondernemers</li>
+        <placetobe-button
+          slot="footer"
+          on-tap="signOut"
+        >Uitloggen</placetobe-button>
+      </placetobe-navigation-bar>
 
-                    <h2>Ben je er klaar voor? Begin dan met de aankleding van je campagnepagina!</h2>
+      <header>
+        <h1>[[campaign.projectNaam]]</h1>
+        <h2>Ben je er klaar voor? Begin dan met de aankleding van je campagnepagina!</h2>
+
+        <iron-selector slot="footer" selected="{{selectedTab}}" attr-for-selected="data-name">
+          <placetobe-button link data-name="story">Verhaal</placetobe-button>
+          <placetobe-button link data-name="finance">Financieel</placetobe-button>
+          <placetobe-button link data-name="details">Gegevens</placetobe-button>
+          <placetobe-button link data-name="incentives">Beloningen</placetobe-button>
+          <placetobe-button link data-name="investments">Investeringen</placetobe-button>
+        </iron-selector>
+
+      </header>
+
+      <main>
+        <div>
+          <!-- tabs /-->
+
+          <!-- details -->
+          <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'story')]]">
+            story!
+          </template>
+
+          <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'finance')]]">
+            finance!
+          </template>
+
+          <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'details')]]">
+            details!
+          </template>
+
+          <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'incentives')]]">
+            incentives!
+          </template>
+
+          <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'investments')]]">
+            investments!
+          </template>
+
+        </div>
+      </main>
+
+      <aside>
+
+      </aside>
 
                     <can-card>
                         <header>
@@ -1106,10 +1158,12 @@ Placetobe dashboard for campaigns
             type: String,
             computed: '_getCampaignStatusLabel(campaign.status)'
         },
-        activeTab: {
-            type: Number,
-            value: 0
+        
+        selectedTab: {
+          type: String,
+          value: 'story'
         },
+
         editable: {
             type: Boolean,
             computed: '_computeIfIsEditable(campaign.entrepreneurCanEdit, campaign.started, userRole)',
@@ -1443,7 +1497,11 @@ Placetobe dashboard for campaigns
           for (var i = 0; i < campaignTypes.length; i++) {
               this.$$('caas-campaign-types').notifyPath('campaignTypes.' + [i] + '.id');
           }
-      }
+      },
+
+      _selectedTabEquals: function(selectedTab, value) {
+        return selectedTab === value;
+      },
 
     });
   </script>
