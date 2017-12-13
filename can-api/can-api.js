@@ -7,12 +7,20 @@ Polymer({
         },
         requestheaders: {
             type: String,
-            computed: 'getRequestHeaders(method, route, auth)'
+            computed: 'getRequestHeaders(method, route, auth, accessToken)'
+        },
+        apiEndpoint: {
+            type: String,
+            notify: true,
+        },
+        accessToken: {
+            type: String,
+            notify: true
         },
         url: {
             type: String,
             notify: true,
-            computed: 'getApiURL(method, route)'
+            computed: 'getApiURL(apiEndpoint,method, route)'
         },
         body: {
             type: Object,
@@ -134,13 +142,13 @@ Polymer({
         alert('Het bestand kon niet worden gedownload');
     },
     getRequestHeaders: function (method, route, auth) {
-        if (!auth || !window.localStorage.CanSessionToken) return {};
+        if (!auth) return {};
         return {
-            'authorization': 'Bearer ' + window.localStorage.CanSessionToken
+            'authorization': 'Bearer ' + this.accessToken
         };
     },
     getApiURL: function () {
-        var apiurl = (window.API_ROOT || 'http://api.crowdaboutnow.eu/') + this.route;
+        var apiurl = (this.apiEndpoint || 'http://api.crowdaboutnow.eu/') + this.route;
         apiurl.replace(':userId', window.localStorage.CanSessionUserId);
         return apiurl;
     },
