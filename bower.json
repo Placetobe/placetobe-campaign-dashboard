@@ -40,6 +40,8 @@
   },
   "resolutions": {
     "moment": "~2.14.1",
-    "iron-form": "~1.0.10"
+    "iron-form": "~1.0.10",
+    "iron-ajax": "^1.4.3",
+    "iron-location": "^2.0.2"
   }
 }
