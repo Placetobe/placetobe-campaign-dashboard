@@ -1,11 +1,19 @@
 <!doctype html>
 <link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../placetobe-styles/placetobe-styles.html">
+<link rel="import" href="../../placetobe-button/placetobe-button.html">
 <link rel="import" href="../can-api/can-api.html">
 <link rel="import" href="../can-button/can-button.html">
 <link rel="import" href="../can-warning/can-warning.html">
 <link rel="import" href="../can-api-feedback/can-api-feedback.html">
 
 <dom-module id="can-form">
+    <style>
+        placetobe-button {
+            display: inline-block;
+            margin-top: var(--placetobe-margin);
+        }
+    </style>
     <template>
 
         <template is="dom-if" if="[[!useWithCaas]]" restamp="true">
@@ -42,12 +50,12 @@
 
             <template is="dom-if" if="[[!hidesubmitbutton]]" restamp="true">
 
-                <can-button
+                <placetobe-button
                     small="{{smallbutton}}"
                     on-button-tap="submit"
                     disabled="[[!valid]]">
                     {{submitlabel}}
-                </can-button>
+                </placetobe-button>
 
             </template>
 

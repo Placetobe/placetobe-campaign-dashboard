@@ -7,6 +7,8 @@
 <link rel="import" href="../placetobe-signin-card/placetobe-signin-card.html">
 <link rel="import" href="../placetobe-card/placetobe-card.html">
 <link rel="import" href="../placetobe-input-box/placetobe-input-box.html">
+<link rel="import" href="../placetobe-textarea-box/placetobe-textarea-box.html">
+<link rel="import" href="../placetobe-campaign-stats-card/placetobe-campaign-stats-card.html">
 <link rel="import" href="../placetobe-button/placetobe-button.html">
 
 <link rel="import" href="../placetobe-navigation-bar/placetobe-navigation-bar.html">
@@ -54,42 +56,6 @@ Placetobe dashboard for campaigns
 <dom-module id="placetobe-campaign-dashboard">
   <template>
     <style include="placetobe-dashboard-styles">
-      :host {
-        display: block;
-        @apply --placetobe-flex-layout--vertical;
-        @apply --placetobe-cross-align--center;
-      }
-      placetobe-signin-card {
-        width: 100%;
-        max-width: 540px;
-      }
-      placetobe-signin-card[hidden] {
-        display: none;
-      }
-      placetobe-card {
-        width: 100%;
-        max-width: 540px;
-        display: flex;
-
-        flex-direction: horizontal;
-        flex-basis: wrap;
-      }
-      :host ul {
-        list-style: none;
-      }
-      li {
-        padding-bottom: 5px;
-        display: flex;
-        flex-direction: horizontal;
-        flex-basis: wrap;
-      }
-      placetobe-input-box {
-        min-width: 88px;
-       --input-box-disabled-background-color: var(-placetobe-color-yellow);
-      }
-      placetobe-input-box:last-child {
-        padding-left: 5px;
-      }
     </style>
 
     <placetobe-signin-card
@@ -148,7 +114,224 @@ Placetobe dashboard for campaigns
 
           <!-- details -->
           <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'story')]]">
-            story!
+
+            <placetobe-card title="Basics">
+              <div slot="main">
+                <article>
+
+                  <p>First things first. Wat is de kern van je campagne?</p>
+  
+                  <can-form
+                    auth
+                    access-token="{{accessToken}}"
+                    api-endpoint="[[apiEndpoint]]"
+                    disabled$="[[!editable]]"
+                    disabled-warning="[[notEditableWarning]]"
+                    apipath="entrepreneurs/[[campaign.id]]/basics"
+                    access-token="{{accessToken}}"
+                    api-endpoint="[[apiEndpoint]]"
+                    formdata="[[campaign]]"
+                    id="basics-form"
+                    on-error="handleBasicsError"
+                    method="put"
+                    valid="{{basicsCompleted}}"
+                  >
+
+                    <placetobe-input-box
+                      name="projectnaam"
+                      value="{{campaign.projectNaam}}"
+                      placeholder="Projectnaam"
+                      pattern=".+"
+                      tip="Hoe gaat je project heten? Dit hoeft niet gelijk te zijn aan je bedrijfsnaam. Idealiter heeft jouw campagnenaam niet meer dan 3 woorden."
+                      required
+                    ></placetobe-input-box>
+                    <placetobe-textarea-box
+                      name="teaser op campagneoverzicht"
+                      value="{{campaign.teaser}}"
+                      placeholder="Teaser op campagneoverzicht"
+                      description="Verleid bezoekers om naar je pagina te gaan. Deze teaser komt op de overzichtenpagina te staan. (max. 140 tekens)"
+                      maxlength="140"
+                      minlength="0"
+                      required
+                    ></placetobe-textarea-box>
+                    <placetobe-textarea-box
+                      name="introductie Tekst"
+                      value="{{campaign.introductieTekst}}"
+                      placeholder="lead boven aan je pagina"
+                      description="Zeg in 400 tekens wie je bent, wat je doet en wat je met de campagne wil. Dit komt boven aan je tekst te staan."
+                      maxlength="400"
+                      minlength="0"
+                      required
+                    ></placetobe-textarea-box>
+
+                  </can-form>
+
+                </article>
+              </div>
+            </placetobe-card>
+
+            <placetobe-card title="Video">
+              <div slot="main">
+                <article>
+                  <p>Trek aandacht met een video. Zo laat je zien wie je bent en wat je plan is.</p>
+
+                  <can-form
+                    auth
+                    access-token="{{accessToken}}"
+                    api-endpoint="[[apiEndpoint]]"
+                    disabled$="[[!editable]]"
+                    disabled-warning="[[notEditableWarning]]"
+                    apipath="entrepreneurs/[[campaign.id]]/videourl"
+                    formdata="[[campaign.video]]"
+                    id="videourl-form"
+                    method="put"
+                    valid="{{videoCompleted}}"
+                  >
+
+                    <placetobe-input-box
+                      name="video url"
+                      value="{{campaign.video.url}}"
+                      placeholder="Vul hier de link naar je video op YouTube of Vimeo in"
+                      tip="Mensen leren je kennen via video. Dus hoe persoonlijker het filmpje, hoe beter het is voor je campagne."
+                    ></placetobe-input-box>
+
+                    <template is="dom-if" if="[[campaign.video.youtube.id]]" restamp="true">
+                      <google-youtube
+                        video-id="[[campaign.video.youtube.id]]"
+                        width="100%"
+                        height="400px"
+                        rel="0"
+                        start="0"
+                        autoplay="false"
+                        modestbranding="1"
+                        showinfo="0"
+                        iv_load_policy="3"
+                        rel="0"
+                      ></google-youtube>
+                    </template>
+
+                    <template is="dom-if" if="[[campaign.video.vimeo.id]]" restamp="true">
+                      <vimeo-video
+                        video-id="[[campaign.video.vimeo.id]]"
+                        container-width="100%"
+                      ></vimeo-video>
+                    </template>
+
+                  </can-form>
+
+                </article>
+              </div>
+            </placetobe-card>
+
+            <placetobe-card title="Campagnetekst">
+              <div slot="main">
+              <article>
+                <p>Verleid en overtuig de crowd met je verhaal.</p>
+                <article id="campaignText" on-tap="openTextEditor"></article>
+              </article>
+              </div>
+            </placetobe-card>
+
+
+            <placetobe-card title="Coverfoto">
+              <div slot="main">
+                <article>
+                  <p>Laat jezelf zien! Kies een duidelijke foto van jou of jullie, de ondernemer(s), waarbij je laat zien wat je doet. ({{maximumCoverFileSize}} KB)</p>
+
+                  <ul>
+                    <li>De foto moet liggend en van goede kwaliteit zijn</li>
+                    <li>Het moet één foto zijn, geen samengevoegde foto’s</li>
+                    <li>Plak geen teksten of banners op de foto en maak geen gebruik van onnatuurlijke bewerkingen</li>
+                    <li>Houd de foto bij voorkeur in kleur</li>
+                  </ul>
+
+                  <can-campaign-cover-form
+                    disabled$="[[!editable]]"
+                    disabled-warning="[[notEditableWarning]]"
+                    campaign-id="{{campaign.id}}"
+                    valid="{{coverCompleted}}"
+                    maximum-file-size="{{maximumCoverFileSize}}"
+                  ></can-campaign-cover-form>
+
+                  <p>Houd er rekening mee dat wanneer de foto niet aan de eisen voldoet, we jou kunnen vragen een andere foto uit te kiezen.</p>
+
+                </article>
+              </div>
+            </placetobe-card>
+
+            <placetobe-card title="Extra documenten uploaden">
+              <div slot="main">
+                <article>
+
+                  <can-api
+                    auth
+                    auto="[[signedIn]]"
+                    api-endpoint="[[apiEndpoint]]"
+                    route="campaigns/[[slug]]/publicfiles"
+                    method="GET"
+                    last-response="{{publicFiles}}"
+                    access-token="{{accessToken}}"
+                  ></can-api>
+
+                  <p>Wil je in je campagnetekst kunnen verwijzen naar extra documenten, bijvoorbeeld je bedrijfsplan? Upload dan hier de bestanden (max. 5 MB), zodat je de hyperlink kunt gebruiken in je campagnetekst.</p>
+
+                  <ul>
+                  <li>Upload je bestand door te klikken op 'Upload bestand'.</li>
+                  <li>Klik op de bestandsnaam, hij opent in een nieuw venster.</li>
+                  <li>Kopieer de URL die in de balk bovenaan verschijnt.</li>
+                  <li>Voer deze in als hyperlink aan je campagnetekst.</li>
+                  </ul>
+
+                  <article class="public-files">
+                    <ul>
+                    <template is="dom-repeat" items="[[publicFiles.files]]">
+
+                      <can-api
+                        auth
+                        auto="[[signedIn]]"
+                        access-token="{{accessToken}}"
+                        api-endpoint="[[apiEndpoint]]"
+                        route="entrepreneurs/[[slug]]/publicfiles/[[item.fileNameEncoded]]"
+                        method="DELETE"
+                        last-response="{{publicFiles}}"
+                        id="publicFile[[index]]"
+                      ></can-api>
+
+                      <li>
+
+                        <a
+                          href$="[[item.url]]"
+                          title$="[[item.fileName]]"
+                          target="_blank"
+                        >[[item.fileName]]</a>
+
+                        <placetobe-button
+                          on-tap="_deletePublicFile"
+                        ></placetobe-button>
+
+                      </li>
+                  </template>
+                  </ul>
+                  </article>
+
+                  <can-file-io
+                    disabled$="[[disabled]]"
+                    disabled-warning="[[disabledWarning]]"
+                    api-route="entrepreneurs/[[slug]]/publicfiles"
+                    user-id="[[campaignId]]"
+                    download-data="{{publicFiles}}"
+                    on-upload-failed="_uploadFailed"
+                    select-button-label="upload bestand"
+                    maximum-file-size="{{maximumFileSize}}"
+                    method="POST"
+                  ></can-file-io>
+
+                </article>
+              </div>
+
+            </placetobe-card>
+
+
           </template>
 
           <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'finance')]]">
@@ -168,190 +351,19 @@ Placetobe dashboard for campaigns
           </template>
 
         </div>
+
+        <aside>
+          <placetobe-campaign-stats-card
+            api-endpoint="[[apiEndpoint]]"
+            campaign-id="[[campaign.id]]"
+            vertical
+          ></placetobe-campaign-stats-card>
+        </aside>
+
       </main>
+                    
 
-      <aside>
-
-      </aside>
-
-                    <can-card>
-                        <header>
-                            <h3>Basics</h3>
-                            <p>First things first. Wat is de kern van je campagne?</p>
-                        </header>
-                        <article>
-                            <can-form
-                                auth
-                                access-token="{{accessToken}}"
-                                api-endpoint="[[apiEndpoint]]"
-                                disabled$="[[!editable]]"
-                                disabled-warning="[[notEditableWarning]]"
-                                apipath="entrepreneurs/[[campaign.id]]/basics"
-                                access-token="{{accessToken}}"
-                                api-endpoint="[[apiEndpoint]]"
-                                formdata="[[campaign]]"
-                                id="basics-form"
-                                on-error="handleBasicsError"
-                                method="put"
-                                valid="{{basicsCompleted}}"
-                                >
-
-                                <can-textinput
-                                    name="projectNaam"
-                                    value="{{campaign.projectNaam}}"
-                                    placeholder="Projectnaam"
-                                    pattern=".+"
-                                    description="Hoe gaat je project heten? Dit hoeft niet gelijk te zijn aan je bedrijfsnaam. Idealiter heeft jouw campagnenaam niet meer dan 3 woorden."
-                                    required
-                                ></can-textinput>
-
-                                <can-textarea
-                                    name="teaser"
-                                    value="{{campaign.teaser}}"
-                                    placeholder="Teaser op campagneoverzicht"
-                                    description="Verleid bezoekers om naar je pagina te gaan. Deze teaser komt op de overzichtenpagina te staan. (max. 140 tekens)"
-                                    maxlength="140"
-                                    minlength="0"
-                                    required
-                                ></can-textarea>
-
-                                <can-textarea
-                                    name="introductieTekst"
-                                    value="{{campaign.introductieTekst}}"
-                                    placeholder="Lead boven aan je pagina"
-                                    description="Zeg in 400 tekens wie je bent, wat je doet en wat je met de campagne wil. Dit komt boven aan je tekst te staan."
-                                    maxlength="400"
-                                    minlength="0"
-                                    required
-                                ></can-textarea>
-
-                            </can-form>
-                        </article>
-
-                    </can-card>
-
-                    <can-card>
-                        <header>
-                            <h3>Categorieën</h3>
-                            <p>Zorg dat geïnteresseerden je weten te vinden. Selecteer (maximaal 3) categorieën die betrekking hebben op je campagne</p>
-                        </header>
-                        <article>
-
-                            <can-form
-                                auth
-                                access-token="{{accessToken}}"
-                                api-endpoint="[[apiEndpoint]]"
-                                disabled$="[[!editable]]"
-                                disabled-warning="[[notEditableWarning]]"
-                                formdata="[[campaign]]"
-                                id="categories-form"
-                                apipath="entrepreneurs/[[campaign.id]]/categories"
-                                method="put"
-                                valid="{{categoriesCompleted}}"
-                                >
-
-                                <can-campaign-categories-list
-                                    selected-values="{{campaign.categories}}"
-                                    max-select="3"
-                                ></can-campaign-categories-list>
-
-                            </can-form>
-
-                        </article>
-                    </can-card>
-
-                    <can-card>
-                        <header>
-                            <h3>Video</h3>
-                            <p> Trek aandacht met een video. Zo laat je zien wie je bent en wat je plan is. </p>
-                        </header>
-                        <article>
-
-                            <can-form
-                                auth
-                                access-token="{{accessToken}}"
-                                api-endpoint="[[apiEndpoint]]"
-                                disabled$="[[!editable]]"
-                                disabled-warning="[[notEditableWarning]]"
-                                apipath="entrepreneurs/[[campaign.id]]/videourl"
-                                formdata="[[campaign.video]]"
-                                id="videourl-form"
-                                method="put"
-                                valid="{{videoCompleted}}"
-                                >
-
-                                <can-textinput
-                                    name="videourl"
-                                    value="{{campaign.video.url}}"
-                                    placeholder="Vul hier de link naar je video op YouTube of Vimeo in"
-                                    description="Mensen leren je kennen via video. Dus hoe persoonlijker het filmpje, hoe beter het is voor je campagne."
-                                ></can-textinput>
-
-
-                                <template is="dom-if" if="[[campaign.video.youtube.id]]" restamp="true">
-
-                                    <google-youtube
-                                        video-id="[[campaign.video.youtube.id]]"
-                                        width="100%"
-                                        height="400px"
-                                        rel="0"
-                                        start="0"
-                                        autoplay="false"
-                                        modestbranding="1"
-                                        showinfo="0"
-                                        iv_load_policy="3"
-                                        rel="0"
-                                    ></google-youtube>
-
-                                </template>
-
-                                <template is="dom-if" if="[[campaign.video.vimeo.id]]" restamp="true">
-
-                                    <vimeo-video
-                                        video-id="[[campaign.video.vimeo.id]]"
-                                        container-width="100%"
-                                    ></vimeo-video>
-
-                                </template>
-
-                            </can-form>
-
-                        </article>
-                    </can-card>
-
-                    <can-card hidden$="[[!editable]]">
-                        <header>
-                            <h3>Campagnetekst</h3>
-                            <p>Verleid en overtuig de crowd met je verhaal.</p>
-                        </header>
-                        <article id="campaignText" on-tap="openTextEditor"></article>
-                    </can-card>
-
-                    <can-card>
-
-                        <header>
-                            <h3>Coverfoto</h3>
-                            <p>Laat jezelf zien! Kies een duidelijke foto van jou of jullie, de ondernemer(s), waarbij je laat zien wat je doet. ({{maximumCoverFileSize}} KB)</p>
-                            <ul>
-                                <li>De foto moet liggend en van goede kwaliteit zijn</li>
-                                <li>Het moet één foto zijn, geen samengevoegde foto’s</li>
-                                <li>Plak geen teksten of banners op de foto en maak geen gebruik van onnatuurlijke bewerkingen</li>
-                                <li>Houd de foto bij voorkeur in kleur</li>
-                            </ul>
-                            <p>Houd er rekening mee dat wanneer de foto niet aan de eisen voldoet, we jou kunnen vragen een andere foto uit te kiezen.</p>
-                        </header>
-                        <article>
-                            <can-campaign-cover-form
-                                disabled$="[[!editable]]"
-                                disabled-warning="[[notEditableWarning]]"
-                                campaign-id="{{campaign.id}}"
-                                valid="{{coverCompleted}}"
-                                maximum-file-size="{{maximumCoverFileSize}}"
-                            ></can-campaign-cover-form>
-                        </article>
-                    </can-card>
-
-                    <can-card>
+                    <!-- <can-card>
                         <header>
                             <h3>Social media</h3>
                             <p>Bouw een band met je achterban door ze iets meer van jezelf te laten zien. </p>
@@ -399,68 +411,9 @@ Placetobe dashboard for campaigns
                                 </can-textinput>
                             </can-form>
                         </article>
-                    </can-card>
-
-                    <can-card>
-
-                        <can-api
-                            auth
-                            auto="[[signedIn]]"
-                            api-endpoint="[[apiEndpoint]]"
-                            route="campaigns/[[slug]]/publicfiles"
-                            method="GET"
-                            last-response="{{publicFiles}}"
-                            access-token="{{accessToken}}"
-                            >
-                        </can-api>
-
-                        <header>
-                            <h3>Extra documenten uploaden</h3>
-                            <p>Wil je in je campagnetekst kunnen verwijzen naar extra documenten, bijvoorbeeld je bedrijfsplan? Upload dan hier de bestanden (max. 5 MB), zodat je de hyperlink kunt gebruiken in je campagnetekst.</p>
-                            <ul>
-                                <li>Upload je bestand door te klikken op 'Upload bestand'.</li>
-                                <li>Klik op de bestandsnaam, hij opent in een nieuw venster.</li>
-                                <li>Kopieer de URL die in de balk bovenaan verschijnt.</li>
-                                <li>Voer deze in als hyperlink aan je campagnetekst.</li>
-                            </ul>
-                        </header>
-                        <article class="public-files">
-                            <ul>
-                                <template is="dom-repeat" items="[[publicFiles.files]]">
-                                    <can-api
-                                        auth
-                                        auto="[[signedIn]]"
-                                        access-token="{{accessToken}}"
-                                        api-endpoint="[[apiEndpoint]]"
-                                        route="entrepreneurs/[[slug]]/publicfiles/[[item.fileNameEncoded]]"
-                                        method="DELETE"
-                                        last-response="{{publicFiles}}"
-                                        id="publicFile[[index]]"
-                                        >
-                                    </can-api>
+                    </can-card> -->
 
 
-                                    <li>
-                                        <a href$="[[item.url]]" title$="[[item.fileName]]" target="_blank">[[item.fileName]]</a>
-                                        <can-button remove multiple on-tap="_deletePublicFile" data-file-name="[[item.fileName]]"></can-button>
-                                    </li>
-                                </template>
-                            </ul>
-                        </article>
-                        <footer>
-                            <can-file-io
-                                disabled$="[[disabled]]"
-                                disabled-warning="[[disabledWarning]]"
-                                api-route="entrepreneurs/[[slug]]/publicfiles"
-                                user-id="[[campaignId]]"
-                                download-data="{{publicFiles}}"
-                                on-upload-failed="_uploadFailed"
-                                select-button-label="upload bestand"
-                                maximum-file-size="{{maximumFileSize}}"
-                                method="POST"
-                            ></can-file-io>
-                        </footer>
-                    </can-card>
 
                     <h2>Bouw het fundament van je campagne. Hoeveel heb je nodig? Hoe lang wil je erover doen?</h2>
 

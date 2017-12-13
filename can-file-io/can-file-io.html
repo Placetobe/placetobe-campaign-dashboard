@@ -1,5 +1,6 @@
 <!doctype html>
 <link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../placetobe-button/placetobe-button.html">
 <link rel="import" href="../can-button/can-button.html">
 <link rel="import" href="../can-form/can-form.html">
 <link rel="import" href="../can-api/can-api.html">
@@ -20,7 +21,7 @@
             on-error="_handleUploadError"
             >
 
-            <can-button on-button-tap="_selectFile">[[selectButtonLabel]]</can-button>
+            <placetobe-button on-tap="_selectFile">[[selectButtonLabel]]</placetobe-button>
             <br>
 
             <input

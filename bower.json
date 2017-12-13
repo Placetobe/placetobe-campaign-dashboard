@@ -7,8 +7,8 @@
     "placetobe-styles": "Placetobe/placetobe-styles",
     "caas-auth-behavior": "CaasElements/caas-auth-behavior",
     "placetobe-signin-card": "Placetobe/placetobe-signin-card",
-    "placetobe-card": "Placetobe/placetobe-card",
-    "placetobe-input-box": "Placetobe/placetobe-input-box",
+    "placetobe-card": "placetobe/placetobe-card",
+    "placetobe-input-box": "placetobe/placetobe-input-box",
     "placetobe-mailinglist-subscribe-form": "Placetobe/placetobe-mailinglist-subscribe-form",
     "placetobe-navigation-bar": "Placetobe/placetobe-navigation-bar",
     "moment": "~2.14.1",
@@ -30,7 +30,9 @@
     "iron-list": "PolymerElements/iron-list#~1.1.5",
     "iron-location": "PolymerElements/iron-location#^2.0.2",
     "iron-signals": "PolymerElements/iron-signals#~1.0.3",
-    "vimeo-video": "*"
+    "vimeo-video": "*",
+    "placetobe-textarea-box": "placetobe/placetobe-textarea-box",
+    "placetobe-campaign-stats-card": "placetobe/placetobe-campaign-stats-card"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
