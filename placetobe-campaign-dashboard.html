@@ -335,19 +335,419 @@ Placetobe dashboard for campaigns
           </template>
 
           <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'finance')]]">
-            finance!
+
+            <h2>Bouw het fundament van je campagne. Hoeveel heb je nodig? Hoe lang wil je erover doen?</h2>
+
+              <can-card>
+                  <header>
+                      <h3>Doelbedragen</h3>
+                      <p>Hoeveel wil je minimaal én maximaal crowdfunden met je campagne?</p>
+                  </header>
+                  <article>
+
+                      <can-form
+                          auth
+                          access-token="{{accessToken}}"
+                          api-endpoint="[[apiEndpoint]]"
+                          disabled$="[[!editable]]"
+                          disabled-warning="[[notEditableWarning]]"
+                          apipath="entrepreneurs/[[campaign.id]]/requiredandmaxfunding"
+                          id="requiredandmaxfunding-form"
+                          formdata="[[campaign]]"
+                          method="PUT"
+                          valid="{{goalsCompleted}}"
+                          on-response="_updateCampaignData"
+                          >
+
+                          <can-textinput
+                              name="requiredFunding"
+                              type="number"
+                              value="{{campaign.requiredFunding}}"
+                              placeholder="minimaal... (€)"
+                              min="5"
+                              pattern="([0-9])+"
+                              required>
+                          </can-textinput>
+
+                          <can-textinput
+                              name="maxFunding"
+                              type="number"
+                              value="{{campaign.maxFunding}}"
+                              placeholder="...en maximaal (€)"
+                              pattern="([0-9])+"
+                              description="Denk goed na over je maximale bedrag. Je moet een duidelijk plan hebben voor het geld dat je extra ophaalt. Let op: bij een leningcampagne kan het maximale bedrag niet hoger zijn dan tweemaal het minimumbedrag."
+                              min="{{campaign.requiredFunding}}"
+                              max="{{maxRequiredFunding}}"
+                              required>
+                          </can-textinput>
+
+                      </can-form>
+
+                  </article>
+
+              </can-card>
+
+              <can-card id="dates">
+                  <header>
+                      <h3>Campagnedata</h3>
+                      <p>Op basis van onderstaande gegevens geven we je informatie over je aflossingsdata en -bedragen</p>
+                  </header>
+
+                  <article>
+
+                      <can-form
+                          auth
+                          access-token="{{accessToken}}"
+                          api-endpoint="[[apiEndpoint]]"
+                          disabled$="[[!editable]]"
+                          disabled-warning="[[notEditableWarning]]"
+                          formdata="{{campaign}}"
+                          apipath="entrepreneurs/[[campaign.id]]/datesinterest"
+                          id="dates-interest-form"
+                          method="PUT"
+                          valid="{{datesCompleted}}"
+                          on-response="_updateCampaignData"
+                          >
+
+                          <can-textinput
+                              name="endDate"
+                              type="date"
+                              date-format="YYYY-MM-DD"
+                              min="[[today]]"
+                              max="2099-12-31"
+                              value="{{campaign.endDate}}"
+                              placeholder="einddatum van je campagne"
+                              required
+                          ></can-textinput>
+
+                          <template is="dom-if" if="[[isLening]]">
+
+                              <template is="dom-if" if="[[!isYearlyLoan]]">
+
+                                  <can-selectbox
+                                      name="annuity"
+                                      value="{{campaign.annuity}}"
+                                      placeholder="hoe wil je aflossen?"
+                                      options="{{annuityItems}}"
+                                      required
+                                  ></can-selectbox>
+
+                              </template>
+
+                              <template is="dom-if" if="[[paysInTerms]]">
+
+                                  <can-textinput
+                                      name="firstPaymentDate"
+                                      type="date"
+                                      date-format="YYYY-MM-DD"
+                                      min="[[campaign.endDate]]"
+                                      max="[[campaign.finalPaymentDate]]"
+                                      value="{{campaign.firstPaymentDate}}"
+                                      placeholder="wanneer begin je met aflossen?"
+                                      required="[[paysInTerms]]"
+                                  ></can-textinput>
+
+                              </template>
+
+                              <can-textinput
+                                  name="finalPaymentDate"
+                                  type="date"
+                                  date-format="YYYY-MM-DD"
+                                  min="[[campaign.firstPaymentDate]]"
+                                  max="2099-12-31"
+                                  value="{{campaign.finalPaymentDate}}"
+                                  placeholder="wanneer eindig je met aflossen?"
+                                  required
+                              ></can-textinput>
+
+                              <can-textinput
+                                  name="totalInterest"
+                                  value="{{campaign.returnOnInvestmentPercentage}}"
+                                  placeholder$="[[totalInterestLabel]]"
+                                  step="0.1"
+                                  pattern="^\d{1,3}(?:\.\d)?$"
+                                  required
+                              ></can-textinput>
+
+                          </template>
+
+                      </can-form>
+
+                  </article>
+
+                  <template is="dom-if" if="[[isLening]]">
+
+                      <footer>
+                          <can-campaign-repayments-card
+                              campaign-id="[[campaign.id]]"
+                              amounts="[[repaymentAmounts]]"
+                          /></can-campaign-repayments-card>
+                      </footer>
+
+                  </template>
+
+              </can-card>
+
+              <can-card>
+                  <header>
+                      <h3>Investeersdersbedragen</h3>
+                      <p>Wat zijn de minimale én maximale bedragen die een persoon per keer kan investeren?</p>
+                  </header>
+                  <article>
+
+                      <caas-campaign-types
+                          auto-download="[[campaign.id]]"
+                          campaign-types="{{campaignTypes}}"
+                          api-endpoint="[[apiEndpoint]]"
+                          campaign-id="[[campaign.id]]"
+                          access-token="[[accessToken]]"
+                          response-status="{{campaignTypesResponseStatus}}">
+                      </caas-campaign-types>
+
+                      <can-form
+                          use-with-caas
+                          access-token="{{accessToken}}"
+                          api-endpoint="[[apiEndpoint]]"
+                          disabled$="[[!editable]]"
+                          disabled-warning="[[notEditableWarning]]"
+                          id="requiredFunding-form"
+                          valid="{{investAmountsCompleted}}"
+                          response-status="[[campaignTypesResponseStatus]]"
+                          on-caas-submit="_saveCampaignTypes">
+
+                          <template is="dom-repeat" items="{{campaignTypes}}" index-as="index">
+
+                              <can-textinput
+                              name="minInvestment"
+                              type="number"
+                              value="{{item.minimumInvestment::change}}"
+                              placeholder="minimaal... [[item.contractTypeName]] (€)"
+                              min="5"
+                              max="80000"
+                              pattern="([0-9])+">
+                              </can-textinput>
+
+                              <can-textinput
+                              name="maxInvestment"
+                              type="number"
+                              value="{{item.maximumInvestment::change}}"
+                              placeholder="... en maximaal [[item.contractTypeName]] (€)"
+                              description="Het minimale bedrag is €5, het maximale €80000."
+                              min="[[item.minimumInvestment]]"
+                              max="80000"
+                              pattern="([0-9])+">
+                              </can-textinput>
+
+                              <template is="dom-if" if="[[isAandelen]]">
+
+                                  <can-textinput
+                                      name="investIncrements"
+                                      type="number"
+                                      value="{{item.investmentIncrement::change}}"
+                                      placeholder="Emissiewaarde (€)"
+                                      pattern="([0-9])+"
+                                      description="Dit is de waarde van 1 aandeel"
+                                      min="{{item.minimumInvestment}}"
+                                      max="{{item.maximumInvestment}}"
+                                      required>
+                                  </can-textinput>
+
+                              </template>
+
+                          </template>
+
+                      </can-form>
+
+                  </article>
+
+              </can-card>
+
+              <template is="dom-if" if="[[isAandelen]]">
+
+                  <can-card>
+                      <header>
+                          <h3>Aandelen</h3>
+                          <p>Vul hier de emissie waarde van 1 aandeel in.</p>
+                          <p>Het aantal te verstrekken aandelen is: doelbedrag / waarde 1 aandeel.</p>
+                      </header>
+                      <article>
+
+                          <can-form
+                              auth
+                              access-token="{{accessToken}}"
+                              api-endpoint="[[apiEndpoint]]"
+                              disabled$="[[!editable]]"
+                              disabled-warning="[[notEditableWarning]]"
+                              apipath="entrepreneurs/[[campaign.id]]/certificatepassingdate"
+                              id="certificatepassingdate-form"
+                              formdata="[[campaign]]"
+                              method="PUT"
+                              valid="{{certificatePassingDateCompleted}}"
+                              on-response="_updateCampaignData"
+                              >
+
+                              <can-textinput
+                                  name="certificatePassingDate"
+                                  type="date"
+                                  date-format="YYYY-MM-DD"
+                                  min="2016-01-01"
+                                  max="2099-12-31"
+                                  value="{{campaign.certificatePassingDate}}"
+                                  description="De dag van de waarheid"
+                                  placeholder="Passeerdatum van de certificaten?"
+                              ></can-textinput>
+
+                          </can-form>
+
+                      </article>
+
+                  </can-card>
+              </template>
+
+
           </template>
 
           <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'details')]]">
-            details!
+
+            <h2>Vul hier de gegevens van jouw onderneming in.</h2>
+
+              <can-card>
+                  <header>
+                      <h3>Jouw onderneming</h3>
+                  </header>
+                  <article>
+
+                      <can-user-profile-form
+                          user-id="[[slug]]"
+                          role="ondernemer"
+                          disabled$="[[!editable]]"
+                          disabled-warning="[[notEditableWarning]]"
+                          is-stocks-campaign="[[isAandelen]]"
+                      ></can-user-profile-form>
+
+                  </article>
+              </can-card>
+
+              <can-card>
+                  <header>
+                      <h3>Kopie ID</h3>
+                      <p>Upload hier een digitale kopie van je paspoort, identiteitskaart of rijbewijs (maximum [[maximumIDFileSize]] KB)</p>
+                  </header>
+                  <article>
+                      <can-campaign-id-form
+                          disabled$="[[!editable]]"
+                          disabled-warning="[[notEditableWarning]]"
+                          campaign-id="[[campaign.id]]"
+                          valid="{{campaignIdComplete}}"
+                          maximum-file-size="{{maximumIDFileSize}}"
+                      ></can-campaign-id-form>
+                  </article>
+
+              </can-card>
+
+              <can-card>
+                  <header>
+                      <h3>KVK uittreksel</h3>
+                      <p>Upload hier een digitaal KVK uittreksel (maximum [[maximumKvkFileSize]] KB)</p>
+                  </header>
+                  <article>
+                      <can-campaign-kvk-form
+                          disabled$="[[!editable]]"
+                          disabled-warning="[[notEditableWarning]]"
+                          campaign-id="[[campaign.id]]"
+                          valid="{{campaignKvkComplete}}"
+                          maximum-file-size="{{maximumKvkFileSize}}"
+                      ></can-campaign-kvk-form>
+                  </article>
+
+              </can-card>
+
+              <can-card>
+                  <header>
+                      <h3>Overeenkomst</h3>
+                      <ul>
+                          <li>
+                              <template is="dom-if" if="[[isLening]]">
+                                  <a href="https://assets.crowdaboutnow.nl/pdf/leningovereenkomst_CAN_ondernemer_V3.pdf" target="_blank">Stap 1: Download de overeenkomst</a>
+                              </template>
+                              <template is="dom-if" if="[[!isLening]]">
+                                  <a href="https://assets.crowdaboutnow.nl/pdf/voorverkoopoverkeenkomst_CAN_ondernemer_V3.pdf" target="_blank">Stap 1: Download de overeenkomst</a>
+                              </template>
+                          </li>
+                          <li>Stap 2: Print, vul in en onderteken</li>
+                          <li>Stap 3: Scan de overeenkomst (duidelijk leesbaar!)</li>
+                          <li>Stap 4: Upload je getekende overeenkomst (als jpg, maximum [[maximumContractFileSize]] KB)</li>
+                      </ul>
+                  </header>
+                  <article>
+                      <can-campaign-contract-form
+                          disabled$="[[!editable]]"
+                          disabled-warning="[[notEditableWarning]]"
+                          campaign-id="[[campaign.id]]"
+                          valid="{{campaignContractComplete}}"
+                          maximum-file-size="{{maximumContractFileSize}}"
+                      ></can-campaign-contract-form>
+                  </article>
+
+              </can-card>
+
           </template>
 
           <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'incentives')]]">
-            incentives!
+
+            <h2>Hoe ga je je supporters bedanken?</h2>
+            <can-campaign-incentives-form
+              campaign-started="[[campaign.started]]"
+              disabled$="[[!editable]]"
+              disabled-warning="[[notEditableWarning]]"
+              campaignid="[[campaign.id]]"
+              contract-type-ids="[[campaign.contractTypeIds]]"
+              campaign-minimum="[[campaign.minInvestment]]"
+              campaign-maximum="[[campaign.maxInvestment]]"
+              valid="{{incentivesComplete}}"
+            ></can-campaign-incentives-form>
+
           </template>
 
           <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'investments')]]">
-            investments!
+
+            <h2>Hier zie je alle investeerders en hoe je met ze in contact komt.</h2>
+
+              <can-card expandable>
+
+                  <can-api
+                      download-file
+                      auth
+                      access-token="{{accessToken}}"
+                      api-endpoint="[[apiEndpoint]]"
+                      content-type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                      id="export-excel"
+                      downloaded-filename="contracts.xlsx"
+                      route="entrepreneurs/[[slug]]/contracts/export/excel"
+                      on-response="_excelDownloadSuccess"
+                      method="GET"
+                      loading="{{loadingExcel}}">
+                  </can-api>
+
+                  <header>Hier download je een overzicht van al je investeerders</header>
+
+                  <article>
+                      <can-button on-tap="_getExportExcel" hidden$="[[loadingExcel]]">Excel</can-button>
+                      <can-loader hidden$="[[!loadingExcel]]" small>
+                          <h4>Bezig met laden. Een ogenblik a.u.b.</h4>
+                      </can-loader>
+                  </article>
+
+
+                  <footer>
+
+                  </footer>
+
+              </can-card>
+
+              <can-contracts-table campaign-id="[[campaign.id]]">
+              </can-contracts-table>
+
           </template>
 
         </div>
@@ -415,411 +815,19 @@ Placetobe dashboard for campaigns
 
 
 
-                    <h2>Bouw het fundament van je campagne. Hoeveel heb je nodig? Hoe lang wil je erover doen?</h2>
+                    
 
-                    <can-card>
-                        <header>
-                            <h3>Doelbedragen</h3>
-                            <p>Hoeveel wil je minimaal én maximaal crowdfunden met je campagne?</p>
-                        </header>
-                        <article>
 
-                            <can-form
-                                auth
-                                access-token="{{accessToken}}"
-                                api-endpoint="[[apiEndpoint]]"
-                                disabled$="[[!editable]]"
-                                disabled-warning="[[notEditableWarning]]"
-                                apipath="entrepreneurs/[[campaign.id]]/requiredandmaxfunding"
-                                id="requiredandmaxfunding-form"
-                                formdata="[[campaign]]"
-                                method="PUT"
-                                valid="{{goalsCompleted}}"
-                                on-response="_updateCampaignData"
-                                >
+                    
 
-                                <can-textinput
-                                    name="requiredFunding"
-                                    type="number"
-                                    value="{{campaign.requiredFunding}}"
-                                    placeholder="minimaal... (€)"
-                                    min="5"
-                                    pattern="([0-9])+"
-                                    required>
-                                </can-textinput>
 
-                                <can-textinput
-                                    name="maxFunding"
-                                    type="number"
-                                    value="{{campaign.maxFunding}}"
-                                    placeholder="...en maximaal (€)"
-                                    pattern="([0-9])+"
-                                    description="Denk goed na over je maximale bedrag. Je moet een duidelijk plan hebben voor het geld dat je extra ophaalt. Let op: bij een leningcampagne kan het maximale bedrag niet hoger zijn dan tweemaal het minimumbedrag."
-                                    min="{{campaign.requiredFunding}}"
-                                    max="{{maxRequiredFunding}}"
-                                    required>
-                                </can-textinput>
 
-                            </can-form>
 
-                        </article>
-
-                    </can-card>
-
-                    <can-card id="dates">
-                        <header>
-                            <h3>Campagnedata</h3>
-                            <p>Op basis van onderstaande gegevens geven we je informatie over je aflossingsdata en -bedragen</p>
-                        </header>
-
-                        <article>
-
-                            <can-form
-                                auth
-                                access-token="{{accessToken}}"
-                                api-endpoint="[[apiEndpoint]]"
-                                disabled$="[[!editable]]"
-                                disabled-warning="[[notEditableWarning]]"
-                                formdata="{{campaign}}"
-                                apipath="entrepreneurs/[[campaign.id]]/datesinterest"
-                                id="dates-interest-form"
-                                method="PUT"
-                                valid="{{datesCompleted}}"
-                                on-response="_updateCampaignData"
-                                >
-
-                                <can-textinput
-                                    name="endDate"
-                                    type="date"
-                                    date-format="YYYY-MM-DD"
-                                    min="[[today]]"
-                                    max="2099-12-31"
-                                    value="{{campaign.endDate}}"
-                                    placeholder="einddatum van je campagne"
-                                    required
-                                ></can-textinput>
-
-                                <template is="dom-if" if="[[isLening]]">
-
-                                    <template is="dom-if" if="[[!isYearlyLoan]]">
-
-                                        <can-selectbox
-                                            name="annuity"
-                                            value="{{campaign.annuity}}"
-                                            placeholder="hoe wil je aflossen?"
-                                            options="{{annuityItems}}"
-                                            required
-                                        ></can-selectbox>
-
-                                    </template>
-
-                                    <template is="dom-if" if="[[paysInTerms]]">
-
-                                        <can-textinput
-                                            name="firstPaymentDate"
-                                            type="date"
-                                            date-format="YYYY-MM-DD"
-                                            min="[[campaign.endDate]]"
-                                            max="[[campaign.finalPaymentDate]]"
-                                            value="{{campaign.firstPaymentDate}}"
-                                            placeholder="wanneer begin je met aflossen?"
-                                            required="[[paysInTerms]]"
-                                        ></can-textinput>
-
-                                    </template>
-
-                                    <can-textinput
-                                        name="finalPaymentDate"
-                                        type="date"
-                                        date-format="YYYY-MM-DD"
-                                        min="[[campaign.firstPaymentDate]]"
-                                        max="2099-12-31"
-                                        value="{{campaign.finalPaymentDate}}"
-                                        placeholder="wanneer eindig je met aflossen?"
-                                        required
-                                    ></can-textinput>
-
-                                    <can-textinput
-                                        name="totalInterest"
-                                        value="{{campaign.returnOnInvestmentPercentage}}"
-                                        placeholder$="[[totalInterestLabel]]"
-                                        step="0.1"
-                                        pattern="^\d{1,3}(?:\.\d)?$"
-                                        required
-                                    ></can-textinput>
-
-                                </template>
-
-                            </can-form>
-
-                        </article>
-
-                        <template is="dom-if" if="[[isLening]]">
-
-                            <footer>
-                                <can-campaign-repayments-card
-                                    campaign-id="[[campaign.id]]"
-                                    amounts="[[repaymentAmounts]]"
-                                /></can-campaign-repayments-card>
-                            </footer>
-
-                        </template>
-
-                    </can-card>
-
-                    <can-card>
-                        <header>
-                            <h3>Investeersdersbedragen</h3>
-                            <p>Wat zijn de minimale én maximale bedragen die een persoon per keer kan investeren?</p>
-                        </header>
-                        <article>
-
-                            <caas-campaign-types
-                                auto-download="[[campaign.id]]"
-                                campaign-types="{{campaignTypes}}"
-                                api-endpoint="[[apiEndpoint]]"
-                                campaign-id="[[campaign.id]]"
-                                access-token="[[accessToken]]"
-                                response-status="{{campaignTypesResponseStatus}}">
-                            </caas-campaign-types>
-
-                            <can-form
-                                use-with-caas
-                                access-token="{{accessToken}}"
-                                api-endpoint="[[apiEndpoint]]"
-                                disabled$="[[!editable]]"
-                                disabled-warning="[[notEditableWarning]]"
-                                id="requiredFunding-form"
-                                valid="{{investAmountsCompleted}}"
-                                response-status="[[campaignTypesResponseStatus]]"
-                                on-caas-submit="_saveCampaignTypes">
-
-                                <template is="dom-repeat" items="{{campaignTypes}}" index-as="index">
-
-                                    <can-textinput
-                                    name="minInvestment"
-                                    type="number"
-                                    value="{{item.minimumInvestment::change}}"
-                                    placeholder="minimaal... [[item.contractTypeName]] (€)"
-                                    min="5"
-                                    max="80000"
-                                    pattern="([0-9])+">
-                                    </can-textinput>
-
-                                    <can-textinput
-                                    name="maxInvestment"
-                                    type="number"
-                                    value="{{item.maximumInvestment::change}}"
-                                    placeholder="... en maximaal [[item.contractTypeName]] (€)"
-                                    description="Het minimale bedrag is €5, het maximale €80000."
-                                    min="[[item.minimumInvestment]]"
-                                    max="80000"
-                                    pattern="([0-9])+">
-                                    </can-textinput>
-
-                                    <template is="dom-if" if="[[isAandelen]]">
-
-                                        <can-textinput
-                                            name="investIncrements"
-                                            type="number"
-                                            value="{{item.investmentIncrement::change}}"
-                                            placeholder="Emissiewaarde (€)"
-                                            pattern="([0-9])+"
-                                            description="Dit is de waarde van 1 aandeel"
-                                            min="{{item.minimumInvestment}}"
-                                            max="{{item.maximumInvestment}}"
-                                            required>
-                                        </can-textinput>
-
-                                    </template>
-
-                                </template>
-
-                            </can-form>
-
-                        </article>
-
-                    </can-card>
-
-                    <template is="dom-if" if="[[isAandelen]]">
-
-                        <can-card>
-                            <header>
-                                <h3>Aandelen</h3>
-                                <p>Vul hier de emissie waarde van 1 aandeel in.</p>
-                                <p>Het aantal te verstrekken aandelen is: doelbedrag / waarde 1 aandeel.</p>
-                            </header>
-                            <article>
-
-                                <can-form
-                                    auth
-                                    access-token="{{accessToken}}"
-                                    api-endpoint="[[apiEndpoint]]"
-                                    disabled$="[[!editable]]"
-                                    disabled-warning="[[notEditableWarning]]"
-                                    apipath="entrepreneurs/[[campaign.id]]/certificatepassingdate"
-                                    id="certificatepassingdate-form"
-                                    formdata="[[campaign]]"
-                                    method="PUT"
-                                    valid="{{certificatePassingDateCompleted}}"
-                                    on-response="_updateCampaignData"
-                                    >
-
-                                    <can-textinput
-                                        name="certificatePassingDate"
-                                        type="date"
-                                        date-format="YYYY-MM-DD"
-                                        min="2016-01-01"
-                                        max="2099-12-31"
-                                        value="{{campaign.certificatePassingDate}}"
-                                        description="De dag van de waarheid"
-                                        placeholder="Passeerdatum van de certificaten?"
-                                    ></can-textinput>
-
-                                </can-form>
-
-                            </article>
-
-                        </can-card>
-                    </template>
-
-
-                    <h2>Vul hier de gegevens van jouw onderneming in.</h2>
-
-                    <can-card>
-                        <header>
-                            <h3>Jouw onderneming</h3>
-                        </header>
-                        <article>
-
-                            <can-user-profile-form
-                                user-id="[[slug]]"
-                                role="ondernemer"
-                                disabled$="[[!editable]]"
-                                disabled-warning="[[notEditableWarning]]"
-                                is-stocks-campaign="[[isAandelen]]"
-                            ></can-user-profile-form>
-
-                        </article>
-                    </can-card>
-
-                    <can-card>
-                        <header>
-                            <h3>Kopie ID</h3>
-                            <p>Upload hier een digitale kopie van je paspoort, identiteitskaart of rijbewijs (maximum [[maximumIDFileSize]] KB)</p>
-                        </header>
-                        <article>
-                            <can-campaign-id-form
-                                disabled$="[[!editable]]"
-                                disabled-warning="[[notEditableWarning]]"
-                                campaign-id="[[campaign.id]]"
-                                valid="{{campaignIdComplete}}"
-                                maximum-file-size="{{maximumIDFileSize}}"
-                            ></can-campaign-id-form>
-                        </article>
-
-                    </can-card>
-
-                    <can-card>
-                        <header>
-                            <h3>KVK uittreksel</h3>
-                            <p>Upload hier een digitaal KVK uittreksel (maximum [[maximumKvkFileSize]] KB)</p>
-                        </header>
-                        <article>
-                            <can-campaign-kvk-form
-                                disabled$="[[!editable]]"
-                                disabled-warning="[[notEditableWarning]]"
-                                campaign-id="[[campaign.id]]"
-                                valid="{{campaignKvkComplete}}"
-                                maximum-file-size="{{maximumKvkFileSize}}"
-                            ></can-campaign-kvk-form>
-                        </article>
-
-                    </can-card>
-
-                    <can-card>
-                        <header>
-                            <h3>Overeenkomst</h3>
-                            <ul>
-                                <li>
-                                    <template is="dom-if" if="[[isLening]]">
-                                        <a href="https://assets.crowdaboutnow.nl/pdf/leningovereenkomst_CAN_ondernemer_V3.pdf" target="_blank">Stap 1: Download de overeenkomst</a>
-                                    </template>
-                                    <template is="dom-if" if="[[!isLening]]">
-                                        <a href="https://assets.crowdaboutnow.nl/pdf/voorverkoopoverkeenkomst_CAN_ondernemer_V3.pdf" target="_blank">Stap 1: Download de overeenkomst</a>
-                                    </template>
-                                </li>
-                                <li>Stap 2: Print, vul in en onderteken</li>
-                                <li>Stap 3: Scan de overeenkomst (duidelijk leesbaar!)</li>
-                                <li>Stap 4: Upload je getekende overeenkomst (als jpg, maximum [[maximumContractFileSize]] KB)</li>
-                            </ul>
-                        </header>
-                        <article>
-                            <can-campaign-contract-form
-                                disabled$="[[!editable]]"
-                                disabled-warning="[[notEditableWarning]]"
-                                campaign-id="[[campaign.id]]"
-                                valid="{{campaignContractComplete}}"
-                                maximum-file-size="{{maximumContractFileSize}}"
-                            ></can-campaign-contract-form>
-                        </article>
-
-                    </can-card>
-
-
-                    <h2>Hoe ga je je supporters bedanken?</h2>
-                    <can-campaign-incentives-form
-                        campaign-started="[[campaign.started]]"
-                        disabled$="[[!editable]]"
-                        disabled-warning="[[notEditableWarning]]"
-                        campaignid="[[campaign.id]]"
-                        contract-type-ids="[[campaign.contractTypeIds]]"
-                        campaign-minimum="[[campaign.minInvestment]]"
-                        campaign-maximum="[[campaign.maxInvestment]]"
-                        valid="{{incentivesComplete}}"
-                    ></can-campaign-incentives-form>
-
-                    <h2>Hier zie je alle investeerders en hoe je met ze in contact komt.</h2>
-
-                    <can-card expandable>
-
-
-                        <can-api
-                            download-file
-                            auth
-                            access-token="{{accessToken}}"
-                            api-endpoint="[[apiEndpoint]]"
-                            content-type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                            id="export-excel"
-                            downloaded-filename="contracts.xlsx"
-                            route="entrepreneurs/[[slug]]/contracts/export/excel"
-                            on-response="_excelDownloadSuccess"
-                            method="GET"
-                            loading="{{loadingExcel}}">
-                        </can-api>
-
-                        <header>Hier download je een overzicht van al je investeerders</header>
-
-                        <article>
-                            <can-button on-tap="_getExportExcel" hidden$="[[loadingExcel]]">Excel</can-button>
-                            <can-loader hidden$="[[!loadingExcel]]" small>
-                                <h4>Bezig met laden. Een ogenblik a.u.b.</h4>
-                            </can-loader>
-                        </article>
-
-
-                        <footer>
-
-                        </footer>
-
-                    </can-card>
-
-                    <can-contracts-table campaign-id="[[campaign.id]]">
-                    </can-contracts-table>
+                    
 
         </section>
 
-        <aside>
+       <!--  <aside>
             <can-sidebar>
                 <can-campaign-stats-card
                     campaign-id="[[campaign.id]]"
@@ -891,7 +899,7 @@ Placetobe dashboard for campaigns
                 </can-campaign-location-card>
 
             </can-sidebar>
-        </aside>
+        </aside> -->
 
     </can-page>
 
@@ -961,7 +969,7 @@ Placetobe dashboard for campaigns
         ></silk-editor>
         <can-button on-tap="saveCampaignText">Opslaan</can-button>
         <can-button small on-tap="requestCloseTextEditor">annuleren</can-button>
-    </can-overlay> -->
+    </can-overlay>
 
     </template>
 
