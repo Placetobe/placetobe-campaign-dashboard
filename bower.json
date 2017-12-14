@@ -32,7 +32,8 @@
     "iron-signals": "PolymerElements/iron-signals#~1.0.3",
     "vimeo-video": "*",
     "placetobe-textarea-box": "placetobe/placetobe-textarea-box",
-    "placetobe-campaign-stats-card": "placetobe/placetobe-campaign-stats-card"
+    "placetobe-campaign-stats-card": "placetobe/placetobe-campaign-stats-card",
+    "placetobe-select-box": "placetobe/placetobe-select-box"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
