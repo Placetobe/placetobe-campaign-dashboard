@@ -33,7 +33,8 @@
     "vimeo-video": "*",
     "placetobe-textarea-box": "placetobe/placetobe-textarea-box",
     "placetobe-campaign-stats-card": "placetobe/placetobe-campaign-stats-card",
-    "placetobe-select-box": "placetobe/placetobe-select-box"
+    "placetobe-select-box": "placetobe/placetobe-select-box",
+    "placetobe-campaign-page": "placetobe/placetobe-campaign-page"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
@@ -47,6 +48,7 @@
     "iron-form": "~1.0.10",
     "iron-ajax": "^1.4.3",
     "iron-location": "^2.0.2",
-    "google-map": "~1.1.3"
+    "google-map": "~1.1.3",
+    "google-youtube": "^1.2.1"
   }
 }
