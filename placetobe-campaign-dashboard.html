@@ -840,10 +840,10 @@ Placetobe dashboard for campaigns
             address="[[campaign.address]]"
             geocode="[[campaign.geocode]]"
           >
-            <can-button
+            <p>
+            <placetobe-button
               on-tap="openLocationSelector"
-              small
-            >Wijzig</can-button>
+            >Wijzig</placetobe-button>
           </can-campaign-location-card>
 
         </aside>
@@ -1327,7 +1327,7 @@ Placetobe dashboard for campaigns
       },
 
       openLocationSelector: function() {
-          this.set('htmlInterview', this.campaign.interview.replace(/"/g, '\\"'));
+          //this.set('htmlInterview', this.campaign.interview.replace(/"/g, '\\"'));
           this.$$('can-overlay#location-selector-overlay').open();
       },
 

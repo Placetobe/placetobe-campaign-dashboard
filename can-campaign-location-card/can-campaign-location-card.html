@@ -1,16 +1,21 @@
 <!doctype html>
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../../google-map/google-map.html">
-<link rel="import" href="../can-card/can-card.html">
+<link rel="import" href="../../placetobe-card/placetobe-card.html">
 
 <dom-module id="can-campaign-location-card">
 
     <template>
-        <can-card>
-            <header>
-                <h3>Locatie</h3>
-            </header>
-            <article>
+
+        <style>
+            google-map {
+                width: 100%;
+                height: 200px;
+            }
+        </style>
+
+        <placetobe-card title="Locatie">
+            <article slot="main">
                 <google-map
                     disable-zoom
                     drag-events
@@ -28,11 +33,9 @@
                             title="maptitle">
                         </google-map-marker>
                 </google-map>
-            </article>
-            <footer>
                 <content></content>
-            </footer>
-        </can-card>
+            </article>
+        </placetobe-card>
     </template>
 
     <script src="can-campaign-location-card.js"></script>
