@@ -10,6 +10,7 @@
 <link rel="import" href="../placetobe-textarea-box/placetobe-textarea-box.html">
 <link rel="import" href="../placetobe-campaign-stats-card/placetobe-campaign-stats-card.html">
 <link rel="import" href="../placetobe-button/placetobe-button.html">
+<link rel="import" href="../placetobe-campaign-page/placetobe-campaign-page.html">
 
 <link rel="import" href="../placetobe-navigation-bar/placetobe-navigation-bar.html">
 
@@ -127,6 +128,7 @@ Placetobe dashboard for campaigns
           <placetobe-button link data-name="details">Gegevens</placetobe-button>
           <placetobe-button link data-name="incentives">Beloningen</placetobe-button>
           <placetobe-button link data-name="investments">Investeringen</placetobe-button>
+          <placetobe-button link data-name="campaign-preview">Campagne voorbeeld</placetobe-button>
         </iron-selector>
 
       </header>
@@ -771,83 +773,97 @@ Placetobe dashboard for campaigns
 
           </template>
 
-        </div>
+          <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'campaign-preview')]]">
 
-        <aside>
-          <placetobe-campaign-stats-card
-            api-endpoint="[[apiEndpoint]]"
-            campaign-id="[[campaign.id]]"
-            vertical
-          ></placetobe-campaign-stats-card>
-
-          <br>
-
-          <placetobe-card title="Campagne Status">
-            <div slot="main">
-              <article>
-                <h4 hidden$="[[!campaign.started]]">Campagne loopt!</h4>
-                <h4 hidden$="[[campaign.started]]">[[campaignStatusLabel]]</h4>
-                <placetobe-button
-                  href="/campagnes/[[campaign.id]]"
-                  target="_blank"
-                >campagne bekijken</placetobe-button>
-              </article>
-            </div>
-          </placetobe-card>
-
-          <placetobe-card title="Formaliteiten">
-
-            <can-api
-              auth
-              auto="[[signedIn]]"
-              access-token="{{accessToken}}"
+            <placetobe-campaign-page
               api-endpoint="[[apiEndpoint]]"
-              route="entrepreneurs/[[slug]]/administrativeformalities"
-              method="GET"
-              last-response="{{administrativeFormalities}}"
-              ></can-api>
+              access-token="[[accessToken]]"
+              campaign-id="[[userId]]"
+            >
+            </placetobe-campaign-page>
 
-            <div slot="main">
-              <article class="administrativeFormalities">
+          </template>
 
-                <p>Onze financiële administratie houdt bij waaraan voldaan is.</p>
-                <ul>
-                <li
-                  data-completed$="[[administrativeFormalities.contractDocumentReceived]]"
-                  data-uncomplete$="[[!administrativeFormalities.contractDocumentReceived]]"
-                >contract goedgekeurd</li>
-                <li
-                  data-completed$="[[administrativeFormalities.identificationDocumentReceived]]"
-                  data-uncomplete$="[[!administrativeFormalities.identificationDocumentReceived]]"
-                >ID goedgekeurd</li>
-                <li
-                  data-completed$="[[administrativeFormalities.KVKDocumentReceived]]"
-                  data-uncomplete$="[[!administrativeFormalities.KVKDocumentReceived]]"
-                >KvK uittreksel ontvangen</li>
-                <li
-                  data-completed$="[[administrativeFormalities.paymentReceived]]"
-                  data-uncomplete$="[[!administrativeFormalities.paymentReceived]]"
-                >factuur betaald</li>
-                <li
-                  data-completed$="[[administrativeFormalities.basicCampaignInformationApproved]]"
-                  data-uncomplete$="[[!administrativeFormalities.basicCampaignInformationApproved]]"
-                >basisgegevens goedgekeurd</li>
-                </ul>
-              </article>
-            </div>
-          </placetobe-card>
+        </div>
+        <template is="dom-if" if="[[!_selectedTabEquals(selectedTab, 'campaign-preview')]]">
 
-          <can-campaign-location-card
-            address="[[campaign.address]]"
-            geocode="[[campaign.geocode]]"
-          >
-            <p>
-            <placetobe-button
-              on-tap="openLocationSelector"
-            >Wijzig</placetobe-button>
-          </can-campaign-location-card>
+          <aside>
+            <placetobe-campaign-stats-card
+              api-endpoint="[[apiEndpoint]]"
+              campaign-id="[[campaign.id]]"
+              vertical
+            ></placetobe-campaign-stats-card>
 
-        </aside>
+            <br>
+
+            <placetobe-card title="Campagne Status">
+              <div slot="main">
+                <article>
+                  <h4 hidden$="[[!campaign.started]]">Campagne loopt!</h4>
+                  <h4 hidden$="[[campaign.started]]">[[campaignStatusLabel]]</h4>
+                  <placetobe-button
+                    href="/campagnes/[[campaign.id]]"
+                    target="_blank"
+                  >campagne bekijken</placetobe-button>
+                </article>
+              </div>
+            </placetobe-card>
+
+            <placetobe-card title="Formaliteiten">
+
+              <can-api
+                auth
+                auto="[[signedIn]]"
+                access-token="{{accessToken}}"
+                api-endpoint="[[apiEndpoint]]"
+                route="entrepreneurs/[[slug]]/administrativeformalities"
+                method="GET"
+                last-response="{{administrativeFormalities}}"
+                ></can-api>
+
+              <div slot="main">
+                <article class="administrativeFormalities">
+
+                  <p>Onze financiële administratie houdt bij waaraan voldaan is.</p>
+                  <ul>
+                  <li
+                    data-completed$="[[administrativeFormalities.contractDocumentReceived]]"
+                    data-uncomplete$="[[!administrativeFormalities.contractDocumentReceived]]"
+                  >contract goedgekeurd</li>
+                  <li
+                    data-completed$="[[administrativeFormalities.identificationDocumentReceived]]"
+                    data-uncomplete$="[[!administrativeFormalities.identificationDocumentReceived]]"
+                  >ID goedgekeurd</li>
+                  <li
+                    data-completed$="[[administrativeFormalities.KVKDocumentReceived]]"
+                    data-uncomplete$="[[!administrativeFormalities.KVKDocumentReceived]]"
+                  >KvK uittreksel ontvangen</li>
+                  <li
+                    data-completed$="[[administrativeFormalities.paymentReceived]]"
+                    data-uncomplete$="[[!administrativeFormalities.paymentReceived]]"
+                  >factuur betaald</li>
+                  <li
+                    data-completed$="[[administrativeFormalities.basicCampaignInformationApproved]]"
+                    data-uncomplete$="[[!administrativeFormalities.basicCampaignInformationApproved]]"
+                  >basisgegevens goedgekeurd</li>
+                  </ul>
+                </article>
+              </div>
+            </placetobe-card>
+
+            <can-campaign-location-card
+              address="[[campaign.address]]"
+              geocode="[[campaign.geocode]]"
+            >
+              <p>
+              <placetobe-button
+                on-tap="openLocationSelector"
+              >Wijzig</placetobe-button>
+            </can-campaign-location-card>
+
+          </aside>
+
+        </template>
 
 
       </main>
