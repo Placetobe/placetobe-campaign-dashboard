@@ -1,11 +1,16 @@
 <!doctype html>
 <link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../placetobe-card/placetobe-card.html">
+<link rel="import" href="../../placetobe-input-box/placetobe-input-box.html">
+<link rel="import" href="../../placetobe-select-box/placetobe-select-box.html">
+<link rel="import" href="../../placetobe-checkbox/placetobe-checkbox.html">
+<link rel="import" href="../../placetobe-button/placetobe-button.html">
 <link rel="import" href="../can-button/can-button.html">
-<link rel="import" href="../can-textinput/can-textinput.html">
+<link rel="import" href="../placetobe-input-box/placetobe-input-box.html">
+<link rel="import" href="../placetobe-styles/placetobe-styles.html">
 <link rel="import" href="../can-selectbox/can-selectbox.html">
-<link rel="import" href="../can-textarea/can-textarea.html">
+<link rel="import" href="../placetobe-textarea-box/placetobe-textarea-box.html">
 <link rel="import" href="../can-card/can-card.html">
-<link rel="import" href="../can-checkbox/can-checkbox.html">
 <link rel="import" href="../can-loader/can-loader.html">
 <link rel="import" href="../can-api-feedback/can-api-feedback.html">
 
@@ -13,13 +18,18 @@
 <dom-module id="can-incentive-input">
     <template>
 
-        <can-card text-align="left">
-            <header>
-                <h4>Beloning #{{number}}</h4>
+        <style>
+            placetobe-card {
+                margin-bottom: var(--placetobe-margin);
+            }
 
-            </header>
+            placetobe-button[data-type="delete"] {
+                --placetobe-button-color: var(--placetobe-color-red);
+            }
+        </style>
 
-            <article>
+        <placetobe-card title="Beloning #[[number]]">
+            <article slot="main">
 
                 <can-form
                     use-with-caas
@@ -29,91 +39,91 @@
                     on-caas-submit="updateIncentive"
                     incentive-id="{{id}}">
 
-                    <can-button remove on-tap="deleteIncentive" incentive-id="{{id}}">verwijder</can-button>
-
-                    <can-textinput
-                        name="title"
+                    <placetobe-input-box
                         type="text"
                         value="{{title}}"
-                        placeholder="Titel van de beloning (optioneel)"
-
-                        description="Bedenk een pakkende titel voor je beloning. Let op: benoem in de titel niet het minimaal benodigde bedrag voor deze beloning, deze wordt standaard aan de titel toegevoegd."
+                        name="Titel van de beloning"
+                        tip="Bedenk een pakkende titel voor je beloning. Let op: benoem in de titel niet het minimaal benodigde bedrag voor deze beloning, deze wordt standaard aan de titel toegevoegd."
                         on-value-changed="_setChanged">
-                    </can-textinput>
+                    </placetobe-input-box>
 
-                    <can-textarea
-                        name="message"
+                    <placetobe-textarea-box
+                        name="Omschrijving"
                         value="{{message}}"
                         placeholder="Geef hier een omschrijving van je beloning"
-                        description="Met beloningen kun je veel aandacht genereren en twijfelaars over de streep trekken. Verzin een originele manier waarop je crowd over je gaat praten. Maak het exclusief en persoonijk."
+                        tip="Met beloningen kun je veel aandacht genereren en twijfelaars over de streep trekken. Verzin een originele manier waarop je crowd over je gaat praten. Maak het exclusief en persoonijk."
                         required
                         on-value-changed="_setChanged">
-                    </can-textarea>
+                    </placetobe-textarea-box>
 
                     <br>
 
-                    <can-textinput
-                        name="minimumInvestment"
+                    <placetobe-input-box
                         type="number"
                         min="[[selectedCampaignType.minimumInvestment]]"
                         max="[[selectedCampaignType.maximumInvestment]]"
                         value="{{minimumInvestment}}"
-                        placeholder="minimale investering? (€)"
+                        name="minimale investering? (€)"
                         required
                         on-value-changed="_setChanged">
-                    </can-textinput>
+                    </placetobe-input-box>
 
-                    <can-selectbox
-                        name="contractTypeId"
+                    <placeobe-select-box
                         value="{{forBusiness}}"
-                        placeholder="Voor bedrijven of particulieren"
+                        name="Voor bedrijven of particulieren"
                         options="[[businessOptions]]"
                         on-value-changed="_setChanged">
-                    </can-selectbox>
+                    </placeobe-select-box>
 
-                    <can-textinput
-                        name="costs"
+                    <placetobe-input-box
                         type="number"
                         required
                         min="0"
                         value="{{costs}}"
-                        placeholder="aanvullende kosten (verzondkosten e.d.) (€)"
+                        name="aanvullende kosten (verzondkosten e.d.) (€)"
                         pattern="^[0-9]([0-9]+|,|)([0-9]+|)$"
                         on-value-changed="_setChanged">
-                    </can-textinput>
+                    </placetobe-input-box>
 
                     <template is="dom-if" if="[[campaignTypeOptions]]">
 
-                      <can-selectbox
-                          name="contractTypeId"
+                      <placetobe-select-box
                           value="{{contractTypeId}}"
-                          placeholder="Campagne type"
+                          name="Campagne type"
                           options="[[campaignTypeOptions]]"
                           on-value-changed="_setChanged">
-                      </can-selectbox>
+                      </placetobe-select-box>
 
                     </template>
 
 
-                    <can-checkbox checked="{{unlimitedStock}}">Oneindig aantal beloningen</can-checkbox>
+                    <placetobe-checkbox
+                        label="Oneindig aantal beloningen"
+                        checked="{{unlimitedStock}}"
+                    ></placetobe-checkbox>
 
                     <template is="dom-if" if="[[!unlimitedStock]]">
-                        <can-textinput
-                            name="inStock"
+                        <placetobe-input-box
                             type="number"
                             min="[[minimumStock]]"
                             value="{{inStock}}"
-                            placeholder="Hoeveel keer kun je deze beloning aanbieden?"
+                            name="Hoeveel keer kun je deze beloning aanbieden?"
                             pattern="^[0-9]([0-9]+|,|)([0-9]+|)$"
                             on-value-changed="_setChanged">
-                        </can-textinput>
+                        </placetobe-input-box>
                     </template>
+
+                    <placetobe-button
+                        data-type="delete"
+                        on-tap="deleteIncentive"
+                        incentive-id="{{id}}"
+                    >verwijder</placetobe-button>
 
                 </can-form>
 
             </article>
 
-        </can-card>
+        </placetobe-card>
 
     </template>
     <script src="can-incentive-input.js"></script>

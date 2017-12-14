@@ -34,7 +34,8 @@
     "placetobe-textarea-box": "placetobe/placetobe-textarea-box",
     "placetobe-campaign-stats-card": "placetobe/placetobe-campaign-stats-card",
     "placetobe-select-box": "placetobe/placetobe-select-box",
-    "placetobe-campaign-page": "placetobe/placetobe-campaign-page"
+    "placetobe-campaign-page": "placetobe/placetobe-campaign-page",
+    "placetobe-checkbox": "placetobe/placetobe-checkbox"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
@@ -50,6 +51,7 @@
     "iron-location": "^2.0.2",
     "google-map": "^1.1.14",
     "google-youtube": "^1.2.1",
-    "iron-image": "~1.0.4"
+    "iron-image": "~1.0.4",
+    "iron-icons": "^1.0.0"
   }
 }

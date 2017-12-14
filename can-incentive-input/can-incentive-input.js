@@ -56,11 +56,11 @@ Polymer({
             type: Array,
             value: [
                 {
-                    name: 'Particulier',
+                    label: 'Particulier',
                     value: 0
                 },
                 {
-                    name: 'Zakelijk',
+                    label: 'Zakelijk',
                     value: 1
                 }
             ]
@@ -109,12 +109,12 @@ Polymer({
 
         for (var i = 0; i < campaignTypes.length; i++) {
             campaignTypeOptions.push({
-                name: campaignTypes[i].contractTypeName,
+                label: campaignTypes[i].contractTypeName,
                 value: campaignTypes[i].contractTypeId
             });
         }
         if(this.contractTypeId == 0) campaignTypeOptions.push({
-            name: 'kies een campagne type',
+            label: 'kies een campagne type',
             value: 0
         });
         this.set('campaignTypeOptions', campaignTypeOptions);
