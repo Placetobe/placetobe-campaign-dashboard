@@ -294,7 +294,7 @@ Placetobe dashboard for campaigns
                     auth
                     auto="[[signedIn]]"
                     api-endpoint="[[apiEndpoint]]"
-                    route="campaigns/[[slug]]/publicfiles"
+                    route="campaigns/[[userId]]/publicfiles"
                     method="GET"
                     last-response="{{publicFiles}}"
                     access-token="{{accessToken}}"
@@ -315,10 +315,9 @@ Placetobe dashboard for campaigns
 
                       <can-api
                         auth
-                        auto="[[signedIn]]"
                         access-token="{{accessToken}}"
                         api-endpoint="[[apiEndpoint]]"
-                        route="entrepreneurs/[[slug]]/publicfiles/[[item.fileNameEncoded]]"
+                        route="entrepreneurs/[[userId]]/publicfiles/[[item.fileNameEncoded]]"
                         method="DELETE"
                         last-response="{{publicFiles}}"
                         id="publicFile[[index]]"
@@ -344,7 +343,7 @@ Placetobe dashboard for campaigns
                   <can-file-io
                     disabled$="[[disabled]]"
                     disabled-warning="[[disabledWarning]]"
-                    api-route="entrepreneurs/[[slug]]/publicfiles"
+                    api-route="entrepreneurs/[[userId]]/publicfiles"
                     user-id="[[campaignId]]"
                     download-data="{{publicFiles}}"
                     on-upload-failed="_uploadFailed"
@@ -715,6 +714,8 @@ Placetobe dashboard for campaigns
             </article>
 
             <can-campaign-incentives-form
+              api-endpoint="[[apiEndpoint]]"
+              access-token="{{accessToken}}"
               campaign-started="[[campaign.started]]"
               disabled$="[[!editable]]"
               disabled-warning="[[notEditableWarning]]"
@@ -743,7 +744,7 @@ Placetobe dashboard for campaigns
                       content-type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                       id="export-excel"
                       downloaded-filename="contracts.xlsx"
-                      route="entrepreneurs/[[slug]]/contracts/export/excel"
+                      route="entrepreneurs/[[userId]]/contracts/export/excel"
                       on-response="_excelDownloadSuccess"
                       method="GET"
                       loading="{{loadingExcel}}">
@@ -1462,6 +1463,10 @@ Placetobe dashboard for campaigns
 
       _selectedTabEquals: function(selectedTab, value) {
         return selectedTab === value;
+      },
+
+      signOut: function() {
+          this.$.signInCard.signOut();
       },
 
     });
