@@ -37,18 +37,16 @@ Polymer({
         businessEntities: {
             type: Object,
             value: [
-                { name : 'Kies een rechtsvorm',  value: ''},
-                { name : 'Eenmanszaak',  value: 'Eenmanszaak'},
-                { name : 'Besloten vennootschap (BV)',   value: 'BV'},
-                { name : 'Commanditaire vennootschap (CV)',   value: 'CV'},
-                { name : 'Coöperatie',   value: 'Cooperatie'},
-                { name : 'Natuurlijk persoon',   value: 'NP'},
-                { name : 'Maatschap',   value: 'Maatschap'},
-                { name : 'Naamloze vennootschap (NV)',   value: 'NV'},
-                { name : 'Stichting',   value: 'Stichting'},
-                { name : 'Vennootschap onder firma (VOF)',  value: 'VOF'},
-                { name : 'Vereniging',  value: 'Vereniging'},
-                { name : 'Kerkgenootschap',  value: 'Kerkgenootschap'}
+                { label : 'Besloten vennootschap (BV)',   value: 'BV'},
+                { label : 'Commanditaire vennootschap (CV)',   value: 'CV'},
+                { label : 'Coöperatie',   value: 'Cooperatie'},
+                { label : 'Natuurlijk persoon',   value: 'NP'},
+                { label : 'Maatschap',   value: 'Maatschap'},
+                { label : 'Naamloze vennootschap (NV)',   value: 'NV'},
+                { label : 'Stichting',   value: 'Stichting'},
+                { label : 'Vennootschap onder firma (VOF)',  value: 'VOF'},
+                { label : 'Vereniging',  value: 'Vereniging'},
+                { label : 'Kerkgenootschap',  value: 'Kerkgenootschap'}
             ],
         },
         isStocksCampaign: {

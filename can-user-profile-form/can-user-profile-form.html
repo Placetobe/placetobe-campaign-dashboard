@@ -2,11 +2,19 @@
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../can-api/can-api.html">
 <link rel="import" href="../can-form/can-form.html">
+<link rel="import" href="../../placetobe-select-box/placetobe-select-box.html">
 <link rel="import" href="../../placetobe-input-box/placetobe-input-box.html">
 <link rel="import" href="../../placetobe-textarea-box/placetobe-textarea-box.html">
 
 <dom-module id="can-user-profile-form">
     <template>
+
+        <style>
+            placetobe-input-box,
+            placetobe-select-box {
+                padding: 3px;
+            }
+        </style>
 
         <can-api
             auth
@@ -39,12 +47,12 @@
                     tip="Dit is de officiële naam van je bedrijf zoals deze staat ingeschreven bij de Kamer van Koophandel."
                 ></placetobe-input-box>
 
-                <can-selectbox
+                <placetobe-select-box
                     required="false"
                     value="{{data.businessEntity}}"
-                    name="rechtsvorm"
+                    name="Rechtsvorm"
                     options="{{businessEntities}}">
-                </can-selectbox>
+                </placetobe-select-box>
 
             </template>
 

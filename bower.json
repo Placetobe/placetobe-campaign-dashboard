@@ -48,7 +48,8 @@
     "iron-form": "~1.0.10",
     "iron-ajax": "^1.4.3",
     "iron-location": "^2.0.2",
-    "google-map": "~1.1.3",
-    "google-youtube": "^1.2.1"
+    "google-map": "^1.1.14",
+    "google-youtube": "^1.2.1",
+    "iron-image": "~1.0.4"
   }
 }

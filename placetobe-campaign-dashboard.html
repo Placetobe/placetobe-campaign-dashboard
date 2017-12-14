@@ -7,6 +7,7 @@
 <link rel="import" href="../placetobe-signin-card/placetobe-signin-card.html">
 <link rel="import" href="../placetobe-card/placetobe-card.html">
 <link rel="import" href="../placetobe-input-box/placetobe-input-box.html">
+<link rel="import" href="../placetobe-select-box/placetobe-select-box.html">
 <link rel="import" href="../placetobe-textarea-box/placetobe-textarea-box.html">
 <link rel="import" href="../placetobe-campaign-stats-card/placetobe-campaign-stats-card.html">
 <link rel="import" href="../placetobe-button/placetobe-button.html">
@@ -448,13 +449,13 @@ Placetobe dashboard for campaigns
                       <template is="dom-if" if="[[isLening]]">
 
                         <template is="dom-if" if="[[!isYearlyLoan]]">
-                          <can-selectbox
-                            name="hoe wil je aflossen?"
+
+                          <placetobe-select-box
+                            name="Hoe wil je aflossen?"
                             value="{{campaign.annuity}}"
-                            placeholder="hoe wil je aflossen?"
-                            options="{{annuityItems}}"
+                            options="[[annuityItems]]"
                             required
-                          ></can-selectbox>
+                          ></placetobe-select-box>
                         </template>
 
                         <template is="dom-if" if="[[paysInTerms]]">
@@ -1099,10 +1100,10 @@ Placetobe dashboard for campaigns
             type: Object,
             notify: true,
             value: [
-                { name : 'In 1 keer', value : 0},
-                { name : '3 maandelijks', value : 3},
-                { name : 'Half jaarlijks', value : 6},
-                { name : 'Jaarlijks', value : 12}
+                { label : 'In 1 keer', value : 0},
+                { label : '3 maandelijks', value : 3},
+                { label : 'Half jaarlijks', value : 6},
+                { label : 'Jaarlijks', value : 12}
             ]
         },
         maxRequiredFunding: {
