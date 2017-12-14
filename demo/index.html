@@ -40,10 +40,11 @@
 
     <template is="dom-bind" id="demo" api-endpoint="[[apiEndPoint]]">
 
-      <caas-session></caas-session>
+      <caas-session token-data="{{tokenData}}"></caas-session>
 
       <placetobe-campaign-dashboard
         api-endpoint="[[apiEndPoint]]"
+        user-id="[[tokenData.data.userId]]"
       ></placetobe-campaign-dashboard>
 
       <script>

@@ -4,6 +4,11 @@
 
 <dom-module id="can-campaign-cover-form">
     <template>
+        <style>
+            img {
+                max-width: 100%;
+            }
+        </style>
         
         <can-file-io
             disabled$="[[disabled]]"
@@ -16,7 +21,11 @@
             maximum-file-size="{{maximumFileSize}}"
         ></can-file-io>
 
-        <img hidden$="[[!coverData.dataURI]]" src="[[coverData.dataURI]]" alt="[[coverData.filename]]">
+        <img
+            hidden$="[[!coverData.dataURI]]"
+            src="[[coverData.dataURI]]"
+            alt="[[coverData.filename]]"
+        >
 
     </template>
     <script src="can-campaign-cover-form.js"></script>

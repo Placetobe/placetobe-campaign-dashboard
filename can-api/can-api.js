@@ -11,7 +11,12 @@ Polymer({
         },
         apiEndpoint: {
             type: String,
+            value: 'https://developmentapi.crowdaboutnow.nl/',
             notify: true,
+        },
+        userId: {
+            type: String,
+            notify: true
         },
         accessToken: {
             type: String,
@@ -20,7 +25,7 @@ Polymer({
         url: {
             type: String,
             notify: true,
-            computed: 'getApiURL(apiEndpoint,method, route)'
+            computed: 'getApiURL(apiEndpoint, method, route)'
         },
         body: {
             type: Object,
@@ -78,8 +83,20 @@ Polymer({
         responseStatus: {
             type: Object,
             notify: true
+        },
+        tokenData: {
+            type: Object,
         }
     },
+
+    observers: [
+        '_setUserId(tokenData.data.userId)'
+    ],
+
+    _setUserId(userId) {
+        this.userId = userId;
+    },
+
     downloadFileChanged: function () {
         if (this.downloadFile) {
             this.set('handleAs', 'arraybuffer');
@@ -148,12 +165,12 @@ Polymer({
         };
     },
     getApiURL: function () {
-        var apiurl = (this.apiEndpoint || 'http://api.crowdaboutnow.eu/') + this.route;
-        apiurl.replace(':userId', window.localStorage.CanSessionUserId);
+        var apiurl = (this.apiEndpoint || 'https://developmentapi.crowdaboutnow.nl/') + this.route;
+        apiurl.replace(':userId', this.userId);
         return apiurl;
     },
     getLoggedIn: function () {
-        return !!(window.localStorage.CanSessionToken && window.localStorage.CanSessionUserId);
+        return !!(window.localStorage.CanSessionToken && this.userId);
     },
     _setStatusResponseObject: function(status, error) {
         if(this.method.toLowerCase() == 'get') return;

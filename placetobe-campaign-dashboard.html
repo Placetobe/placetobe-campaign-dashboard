@@ -45,7 +45,6 @@
 <link rel="import" href="can-file-io/can-file-io.html">
 <link rel="import" href="can-location-selector/can-location-selector.html">
 <link rel="import" href="can-campaign-location-card/can-campaign-location-card.html">
-<link rel="import" href="can-campaign-status/can-campaign-status.html">
 <!--
 `placetobe-campaign-dashboard`
 Placetobe dashboard for campaigns
@@ -56,6 +55,9 @@ Placetobe dashboard for campaigns
 <dom-module id="placetobe-campaign-dashboard">
   <template>
     <style include="placetobe-dashboard-styles">
+    :host img {
+      max-width: 100%;
+    }
     </style>
 
     <placetobe-signin-card
@@ -79,12 +81,6 @@ Placetobe dashboard for campaigns
         access-token="{{accessToken}}"
         api-endpoint="[[apiEndpoint]]"
       ></can-api>
-
-
-      <can-campaign-status
-        slug="[[campaign.slug]]"
-        percentage-completed="[[percentageCompleted]]">
-      </can-campaign-status>
 
       <placetobe-navigation-bar>
         <li slot="navigation">Dashboard Ondernemers</li>
@@ -603,7 +599,7 @@ Placetobe dashboard for campaigns
                   <article>
                   <p>
                   <can-user-profile-form
-                    user-id="[[slug]]"
+                    user-id="[[userId]]"
                     role="ondernemer"
                     disabled$="[[!editable]]"
                     disabled-warning="[[notEditableWarning]]"

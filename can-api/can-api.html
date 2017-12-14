@@ -2,10 +2,16 @@
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../../iron-ajax/iron-ajax.html">
 <link rel="import" href="../../iron-signals/iron-signals.html">
+<link rel="import" href="../../caas-session/caas-session.html">
 
 <dom-module id="can-api">
 
     <template>
+
+        <caas-session
+            access-token="{{accessToken}}"
+            token-data="{{tokenData}}"
+        ></caas-session>
 
         <iron-ajax
             id="ajax"
