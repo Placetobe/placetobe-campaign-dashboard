@@ -84,7 +84,7 @@ Placetobe dashboard for campaigns
       display: inline-block;
     }
 
-    a
+
     </style>
 
     <placetobe-signin-card
@@ -147,7 +147,7 @@ Placetobe dashboard for campaigns
                 <article>
 
                   <p>First things first. Wat is de kern van je campagne?</p>
-  
+
                   <can-form
                     auth
                     access-token="{{accessToken}}"
@@ -250,7 +250,7 @@ Placetobe dashboard for campaigns
               </div>
             </placetobe-card>
 
-            <placetobe-card title="Campagnetekst">
+            <placetobe-card loaded="{{campaignTextCardLoaded}}" title="Campagnetekst">
               <div slot="main">
               <article>
                 <p>Verleid en overtuig de crowd met je verhaal.</p>
@@ -850,7 +850,7 @@ Placetobe dashboard for campaigns
 
 
       </main>
-                    
+
 
                     <!-- <can-card>
                         <header>
@@ -902,7 +902,7 @@ Placetobe dashboard for campaigns
                         </article>
                     </can-card> -->
 
-                   
+
 
     <can-overlay
         id="location-selector-overlay"
@@ -1119,7 +1119,7 @@ Placetobe dashboard for campaigns
             type: String,
             computed: '_getCampaignStatusLabel(campaign.status)'
         },
-        
+
         selectedTab: {
           type: String,
           value: 'details'
@@ -1193,7 +1193,7 @@ Placetobe dashboard for campaigns
         '_parseFacebookURL(campaign.facebook)',
         '_parseTwitterURL(campaign.twitter)',
         '_parseLinkedInURL(campaign.linkedin)',
-        '_setCampaignText(campaign.interview)',
+        '_setCampaignText(campaign.interview, campaignTextCardLoaded)',
         '_setVideo(campaign.video.url)',
         '_setUserParameters(_tokenData.data.*)'
       ],
