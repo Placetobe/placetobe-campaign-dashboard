@@ -22,9 +22,6 @@
 <link rel="import" href="../silk-editor/silk-editor.html">
 <link rel="import" href="../caas-campaign-types/caas-campaign-types.html">
 
-<link rel="import" href="can-page/can-page.html">
-<link rel="import" href="can-page-tabs/can-page-tabs.html">
-<link rel="import" href="can-campaign-stats-card/can-campaign-stats-card.html">
 <link rel="import" href="can-user-session/can-user-session.html">
 <link rel="import" href="can-login-page/can-login-page.html">
 <link rel="import" href="can-form/can-form.html">
@@ -58,6 +55,36 @@ Placetobe dashboard for campaigns
     :host img {
       max-width: 100%;
     }
+
+    placetobe-card ul {
+      text-align: left;
+    }
+
+    li[data-completed]:before {
+      content: '';
+      border-radius: 50%;
+      width: var(--placetobe-margin);
+      height: var(--placetobe-margin);
+      background-color: var(--placetobe-color-green);
+      box-sizing: border-box;
+      margin-right: 8px;
+      margin-top: 4px;
+      display: inline-block;
+    }
+
+    li[data-uncomplete]:before {
+      content: '';
+      border-radius: 50%;
+      width: var(--placetobe-margin);
+      height: var(--placetobe-margin);
+      background-color: var(--placetobe-color-red);
+      box-sizing: border-box;
+      margin-right: 8px;
+      margin-top: 4px;
+      display: inline-block;
+    }
+
+    a
     </style>
 
     <placetobe-signin-card
@@ -111,7 +138,9 @@ Placetobe dashboard for campaigns
           <!-- details -->
           <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'story')]]">
 
-            <h2>Ben je er klaar voor? Begin dan met de aankleding van je campagnepagina!</h2>
+            <article>
+              <p>Ben je er klaar voor? Begin dan met de aankleding van je campagnepagina!</p>
+            </article>
 
             <placetobe-card title="Basics">
               <div slot="main">
@@ -237,10 +266,10 @@ Placetobe dashboard for campaigns
                   <p>Laat jezelf zien! Kies een duidelijke foto van jou of jullie, de ondernemer(s), waarbij je laat zien wat je doet. ({{maximumCoverFileSize}} KB)</p>
 
                   <ul>
-                    <li>De foto moet liggend en van goede kwaliteit zijn</li>
-                    <li>Het moet één foto zijn, geen samengevoegde foto’s</li>
-                    <li>Plak geen teksten of banners op de foto en maak geen gebruik van onnatuurlijke bewerkingen</li>
-                    <li>Houd de foto bij voorkeur in kleur</li>
+                  <li>De foto moet liggend en van goede kwaliteit zijn</li>
+                  <li>Het moet één foto zijn, geen samengevoegde foto’s</li>
+                  <li>Plak geen teksten of banners op de foto en maak geen gebruik van onnatuurlijke bewerkingen</li>
+                  <li>Houd de foto bij voorkeur in kleur</li>
                   </ul>
 
                   <can-campaign-cover-form
@@ -334,7 +363,9 @@ Placetobe dashboard for campaigns
 
           <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'finance')]]">
 
-              <h2>Bouw het fundament van je campagne. Hoeveel heb je nodig? Hoe lang wil je erover doen?</h2>
+            <article>
+              <p>Bouw het fundament van je campagne. Hoeveel heb je nodig? Hoe lang wil je erover doen?</p>
+            </article>
 
               <placetobe-card title="Doelbedragen">
                 <div slot="main">
@@ -592,7 +623,9 @@ Placetobe dashboard for campaigns
 
           <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'details')]]">
 
-            <h2>Vul hier de gegevens van jouw onderneming in.</h2>
+            <article>
+              <p>Vul hier de gegevens van jouw onderneming in.</p>
+            </article>
 
               <placetobe-card title="Jouw onderneming">
                 <div slot="main">
@@ -677,7 +710,10 @@ Placetobe dashboard for campaigns
 
           <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'incentives')]]">
 
-            <h2>Hoe ga je je supporters bedanken?</h2>
+            <article>
+              <p>Hoe ga je je supporters bedanken?</p>
+            </article>
+
             <can-campaign-incentives-form
               campaign-started="[[campaign.started]]"
               disabled$="[[!editable]]"
@@ -693,7 +729,9 @@ Placetobe dashboard for campaigns
 
           <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'investments')]]">
 
-            <h2>Hier zie je alle investeerders en hoe je met ze in contact komt.</h2>
+            <article>
+              <p>Hier zie je alle investeerders en hoe je met ze in contact komt.</p>
+            </article>
 
               <can-card expandable>
 
@@ -740,7 +778,76 @@ Placetobe dashboard for campaigns
             campaign-id="[[campaign.id]]"
             vertical
           ></placetobe-campaign-stats-card>
+
+          <br>
+
+          <placetobe-card title="Campagne Status">
+            <div slot="main">
+              <article>
+                <h4 hidden$="[[!campaign.started]]">Campagne loopt!</h4>
+                <h4 hidden$="[[campaign.started]]">[[campaignStatusLabel]]</h4>
+                <placetobe-button
+                  href="/campagnes/[[campaign.id]]"
+                  target="_blank"
+                >campagne bekijken</placetobe-button>
+              </article>
+            </div>
+          </placetobe-card>
+
+          <placetobe-card title="Formaliteiten">
+
+            <can-api
+              auth
+              auto="[[signedIn]]"
+              access-token="{{accessToken}}"
+              api-endpoint="[[apiEndpoint]]"
+              route="entrepreneurs/[[slug]]/administrativeformalities"
+              method="GET"
+              last-response="{{administrativeFormalities}}"
+              ></can-api>
+
+            <div slot="main">
+              <article class="administrativeFormalities">
+
+                <p>Onze financiële administratie houdt bij waaraan voldaan is.</p>
+                <ul>
+                <li
+                  data-completed$="[[administrativeFormalities.contractDocumentReceived]]"
+                  data-uncomplete$="[[!administrativeFormalities.contractDocumentReceived]]"
+                >contract goedgekeurd</li>
+                <li
+                  data-completed$="[[administrativeFormalities.identificationDocumentReceived]]"
+                  data-uncomplete$="[[!administrativeFormalities.identificationDocumentReceived]]"
+                >ID goedgekeurd</li>
+                <li
+                  data-completed$="[[administrativeFormalities.KVKDocumentReceived]]"
+                  data-uncomplete$="[[!administrativeFormalities.KVKDocumentReceived]]"
+                >KvK uittreksel ontvangen</li>
+                <li
+                  data-completed$="[[administrativeFormalities.paymentReceived]]"
+                  data-uncomplete$="[[!administrativeFormalities.paymentReceived]]"
+                >factuur betaald</li>
+                <li
+                  data-completed$="[[administrativeFormalities.basicCampaignInformationApproved]]"
+                  data-uncomplete$="[[!administrativeFormalities.basicCampaignInformationApproved]]"
+                >basisgegevens goedgekeurd</li>
+                </ul>
+              </article>
+            </div>
+          </placetobe-card>
+
+          <can-campaign-location-card
+            address="[[campaign.address]]"
+            geocode="[[campaign.geocode]]"
+          >
+            <can-button
+              on-tap="openLocationSelector"
+              small
+            >Wijzig</can-button>
+          </can-campaign-location-card>
+
         </aside>
+
 
       </main>
                     
@@ -795,95 +902,7 @@ Placetobe dashboard for campaigns
                         </article>
                     </can-card> -->
 
-
-
-                    
-
-
-                    
-
-
-
-
-                    
-
-        </section>
-
-       <!--  <aside>
-            <can-sidebar>
-                <can-campaign-stats-card
-                    campaign-id="[[campaign.id]]"
-                    contract-type-id="[[activeContractId]]"
-                ></can-campaign-stats-card>
-
-
-                <can-card
-                    expanded
-                    hidden$="[[!campaignTypes.1]]">
-                    <header>
-                        <h3>Combinatie overzicht:</h3>
-                        <template is="dom-repeat" items="[[campaignTypes]]" index-as="index">
-                            <h4>Totaal [[item.contractTypeName]]: <can-number euros="[[item.progress]]"></can-number></h4>
-                        </template>
-                    </header>
-                </can-card>
-
-
-                <can-card expandable expanded>
-                    <header>
-                        <h3>Campagnestatus</h3>
-                        <h4 hidden$="[[!campaign.started]]">Campagne loopt!</h4>
-                        <h4 hidden$="[[campaign.started]]">[[campaignStatusLabel]]</h4>
-                    </header>
-                    <article>
-                        <can-button
-                            is="pushstate-anchor"
-                            url="/campagnes/[[campaign.id]]"
-                            target="_blank"
-                            >
-                            campagne bekijken
-                        </can-button>
-                    </article>
-                </can-card>
-
-                <can-card>
-
-                    <can-api
-                        auth
-                        auto="[[signedIn]]"
-                        access-token="{{accessToken}}"
-                        api-endpoint="[[apiEndpoint]]"
-                        route="entrepreneurs/[[slug]]/administrativeformalities"
-                        method="GET"
-                        last-response="{{administrativeFormalities}}"
-                        >
-                    </can-api>
-
-                    <header>
-                        <h3>Campagne formaliteiten</h3>
-                        <p>Onze financiële administratie houdt bij waaraan voldaan is.</p>
-                    </header>
-                    <article class="administrativeFormalities">
-                        <ul>
-                            <li completed$="[[administrativeFormalities.contractDocumentReceived]]">contract goedgekeurd</li>
-                            <li completed$="[[administrativeFormalities.identificationDocumentReceived]]">ID goedgekeurd</li>
-                            <li completed$="[[administrativeFormalities.KVKDocumentReceived]]">KvK uittreksel ontvangen</li>
-                            <li completed$="[[administrativeFormalities.paymentReceived]]">factuur betaald</li>
-                            <li completed$="[[administrativeFormalities.basicCampaignInformationApproved]]">basisgegevens goedgekeurd</li>
-                        </ul>
-                    </article>
-                </can-card>
-
-                <can-campaign-location-card
-                    address="[[campaign.address]]"
-                    geocode="[[campaign.geocode]]">
-                        <can-button on-tap="openLocationSelector" small>Wijzig</can-button></p>
-                </can-campaign-location-card>
-
-            </can-sidebar>
-        </aside> -->
-
-    </can-page>
+                   
 
     <can-overlay
         id="location-selector-overlay"
