@@ -3,11 +3,11 @@ Polymer({
     properties: {
         apiEndpoint: {
             type: String,
-            value: window.API_ROOT
+            // value: window.API_ROOT
         },
         accessToken: {
             type: String,
-            value: window.localStorage.getItem('CanSessionToken')
+            // value: window.localStorage.getItem('CanSessionToken')
         },
         incentives: Array,
         valid: {
