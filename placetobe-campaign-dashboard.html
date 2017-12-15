@@ -508,16 +508,17 @@ Placetobe dashboard for campaigns
 
                     </can-form>
 
-                    <template is="dom-if" if="[[isLening]]">
-                      <can-campaign-repayments-card
-                        campaign-id="[[campaign.id]]"
-                        amounts="[[repaymentAmounts]]"
-                      ></can-campaign-repayments-card>
-                    </template>
-
                   </article>
                 </div>
               </placetobe-card>
+
+              <template is="dom-if" if="[[isLening]]">
+                <can-campaign-repayments-card
+                  campaign-id="[[campaign.id]]"
+                  amounts="[[repaymentAmounts]]"
+                ></can-campaign-repayments-card>
+                <br>
+              </template>
 
               <placetobe-card title="Investeersdersbedragen">
                 <div slot="main">

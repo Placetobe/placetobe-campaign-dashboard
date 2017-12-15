@@ -1,5 +1,7 @@
 <!doctype html>
 <link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../placetobe-styles/placetobe-styles.html">
+<link rel="import" href="../../placetobe-card/placetobe-card.html">
 <link rel="import" href="../can-api/can-api.html">
 <link rel="import" href="../can-utils/can-number.html">
 <link rel="import" href="../can-utils/can-date.html">
@@ -19,6 +21,12 @@ Example:
 <dom-module id="can-campaign-repayments-card">
     <template>
 
+        <style>
+            can-list-item {
+                @apply --placetobe-font-body;
+            }
+        </style>
+
         <can-api
             id="paymentsAjax"
             auto="[[campaignId]]"
@@ -28,12 +36,8 @@ Example:
             >
         </can-api>
 
-        <can-card>
-            <header>
-                <h3>Terugbetalingen</h3>
-                <h4>aan investeerders</h4>
-            </header>
-            <can-list reversed>
+        <placetobe-card title="Terugbetalingen aan investeerders">
+            <can-list reversed slot="main">
 
                 <template is="dom-repeat" items="[[_repaymentsAmounts]]" as="amount">
                     <can-list-item expandable expanded$="[[_itemIsExpanded(index, expandedItem)]]">
@@ -85,7 +89,7 @@ Example:
 
                 </can-list>
             </template>
-        </can-card>
+        </placetobe-card>
 
     </template>
     <script src="can-campaign-repayments-card.js"></script>
