@@ -144,8 +144,15 @@ Polymer({
         }
     },
 
-    deleteIncentive: function(evt) {
-        this.fire('delete', evt.target.parentElement.incentiveId);
+    _handleDeleteIncentive(evt) {
+        var confirm = window.confirm('Weet je zeker dat je deze beloning wilt verwijderen? Dit kan niet ongedaan worden gemaakt.');
+        if(confirm) {
+            this.deleteIncentive(evt.target.parentElement.incentiveId);
+        }
+    },
+
+    deleteIncentive: function(incentiveId) {
+        this.fire('delete', incentiveId);
     },
 
     updateIncentive: function(evt) {

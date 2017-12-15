@@ -33,6 +33,10 @@
                 margin: var(--placetobe-margin) 0;
                 text-align: left;
             }
+
+            placetobe-input-box {
+                margin: 3px 0;                
+            }
         </style>
 
         <placetobe-card title="Beloning #[[number]]">
@@ -124,7 +128,7 @@
 
                     <placetobe-button
                         data-type="delete"
-                        on-tap="deleteIncentive"
+                        on-tap="_handleDeleteIncentive"
                         incentive-id="{{id}}"
                     >verwijder</placetobe-button>
 
