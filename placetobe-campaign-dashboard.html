@@ -89,7 +89,13 @@ Placetobe dashboard for campaigns
       display: inline-block;
     }
 
-
+    silk-editor {
+      width: 600px;
+      max-width: 100%;
+      height: 70vh;
+      padding-top: 50px;
+      box-sizing: border-box;
+    }
     </style>
 
     <placetobe-signin-card
@@ -971,8 +977,8 @@ Placetobe dashboard for campaigns
             on-content-change="_handleCampaignText"
             formatting-options="bold,italics,h3,unorderedlist,orderedlist,link,image,underline,vimeo,youtube"
         ></silk-editor>
-        <can-button on-tap="saveCampaignText">Opslaan</can-button>
-        <can-button small on-tap="requestCloseTextEditor">annuleren</can-button>
+        <placetobe-button on-tap="saveCampaignText">Opslaan</placetobe-button>
+        <placetobe-button link on-tap="requestCloseTextEditor">annuleren</placetobe-button>
     </can-overlay>
 
     </template>
