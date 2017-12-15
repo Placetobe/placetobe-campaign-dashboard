@@ -28,8 +28,9 @@
                 body="{{formdata}}"
                 on-response="_handleResponse"
                 on-error="_handleError"
-                response-status="{{responseStatus}}">
-            </can-api>
+                response-status="{{responseStatus}}"
+                loading="{{loading}}"
+            ></can-api>
 
         </template>
 
@@ -53,14 +54,13 @@
                 <placetobe-button
                     small="{{smallbutton}}"
                     on-button-tap="submit"
-                    disabled="[[!valid]]">
-                    {{submitlabel}}
-                </placetobe-button>
+                    disabled="[[!valid]]"
+                    waiting="[[loading]]"
+                >[[submitlabel]]</placetobe-button>
 
             </template>
 
             <can-api-feedback
-                hidden$="[[hideFeedback]]"
                 response-status="[[responseStatus]]">
             </can-api-feedback>
 

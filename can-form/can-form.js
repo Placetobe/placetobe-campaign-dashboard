@@ -65,6 +65,10 @@ Polymer({
         useWithCaas: {
             type: Boolean,
             value: false
+        },
+        loading: {
+            type: Boolean,
+            value: false
         }
     },
     submit: function(e) {

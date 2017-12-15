@@ -35,7 +35,8 @@
     "placetobe-campaign-stats-card": "placetobe/placetobe-campaign-stats-card",
     "placetobe-select-box": "placetobe/placetobe-select-box",
     "placetobe-campaign-page": "placetobe/placetobe-campaign-page",
-    "placetobe-checkbox": "placetobe/placetobe-checkbox"
+    "placetobe-checkbox": "placetobe/placetobe-checkbox",
+    "paper-toast": "PolymerElements/paper-toast#^2.0.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

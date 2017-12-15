@@ -74,7 +74,6 @@ Polymer({
             type: Boolean,
             value: true,
             notify: true
-
         },
         downloadedFilename: {
             type: String,

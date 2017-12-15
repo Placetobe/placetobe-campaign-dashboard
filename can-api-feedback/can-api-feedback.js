@@ -37,6 +37,7 @@ Polymer({
         case 'success':
             return 'opgeslagen!';
         case 'failed':
+            alert(responseStatus.error);
             return responseStatus.error;
         default:
             return '';
