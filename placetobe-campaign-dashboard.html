@@ -305,45 +305,14 @@ Placetobe dashboard for campaigns
                     access-token="{{accessToken}}"
                   ></can-api>
 
-                  <p>Wil je in je campagnetekst kunnen verwijzen naar extra documenten, bijvoorbeeld je bedrijfsplan? Upload dan hier de bestanden (max. 5 MB), zodat je de hyperlink kunt gebruiken in je campagnetekst.</p>
-
+                  <p>Wil je extra documenten aanbieden aan je investeerders, bijvoorbeeld je bedrijfsplan? Upload dan hier de bestanden (max. 5 MB per bestand).</p>
+<!-- 
                   <ul>
                   <li>Upload je bestand door te klikken op 'Upload bestand'.</li>
                   <li>Klik op de bestandsnaam, hij opent in een nieuw venster.</li>
                   <li>Kopieer de URL die in de balk bovenaan verschijnt.</li>
                   <li>Voer deze in als hyperlink aan je campagnetekst.</li>
-                  </ul>
-
-                  <article class="public-files">
-                    <ul>
-                    <template is="dom-repeat" items="[[publicFiles.files]]">
-
-                      <can-api
-                        auth
-                        access-token="{{accessToken}}"
-                        api-endpoint="[[apiEndpoint]]"
-                        route="entrepreneurs/[[userId]]/publicfiles/[[item.fileNameEncoded]]"
-                        method="DELETE"
-                        last-response="{{publicFiles}}"
-                        id="publicFile[[index]]"
-                      ></can-api>
-
-                      <li>
-
-                        <a
-                          href$="[[item.url]]"
-                          title$="[[item.fileName]]"
-                          target="_blank"
-                        >[[item.fileName]]</a>
-
-                        <placetobe-button
-                          on-tap="_deletePublicFile"
-                        ></placetobe-button>
-
-                      </li>
-                  </template>
-                  </ul>
-                  </article>
+                  </ul> -->
 
                   <can-file-io
                     disabled$="[[disabled]]"
@@ -362,6 +331,50 @@ Placetobe dashboard for campaigns
 
             </placetobe-card>
 
+            <template is="dom-repeat" items="[[publicFiles.files]]">
+              <placetobe-card title="[[item.fileName]]">
+                <article slot="main">
+                  <can-api
+                    auth
+                    access-token="{{accessToken}}"
+                    api-endpoint="[[apiEndpoint]]"
+                    route="entrepreneurs/[[userId]]/publicfiles/[[item.fileNameEncoded]]"
+                    method="DELETE"
+                    last-response="{{publicFiles}}"
+                    id="publicFile[[index]]"
+                  ></can-api>
+
+                  <placetobe-input-box
+                    name="Betstand URL"
+                    value="[[item.url]]"
+                    disabled
+                  ></placetobe-input-box>
+
+                  <placetobe-button
+                    href$="[[item.url]]"
+                    title$="[[item.fileName]]"
+                    target="_blank"
+                    link
+                  >Open bestand</placetobe-button>
+                   | 
+                  <placetobe-button
+                    on-tap="_deletePublicFile"
+                    link
+                  >verwijder</placetobe-button>
+
+                </article>
+
+              </placetobe-card>
+            </template>
+
+                    <!-- <template is="dom-repeat" items="[[publicFiles.files]]">
+
+
+                      <li>
+
+
+                      </li>
+                  </template>
 
           </template>
 
