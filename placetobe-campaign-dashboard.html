@@ -783,7 +783,7 @@ Placetobe dashboard for campaigns
 
           </template>
 
-          <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'preview')]]">
+          <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'preview')]]" restamp="true">
             <placetobe-campaign-page
               api-endpoint="[[apiEndpoint]]"
               campaign-id="[[campaign.id]]"
