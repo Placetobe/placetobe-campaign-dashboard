@@ -10,6 +10,14 @@
     
     <template>
 
+        <style>
+            ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+
         <can-api
             auth
             auto="[[campaignId]]"
@@ -29,54 +37,24 @@
             method="GET">
         </can-api>
 
-        
-        <can-card>
-            <header>
-                <h3>
-                    Investeerders
-                </h3>
-                <p>Lukt het niet om een contract te downloaden? Check of de pop-up blocker van je browser uit staat.</p>
-            </header>
-            <article>
-                <can-list>
+        <template
+            is="dom-repeat"
+            items="[[contracts]]"
+        >
 
-                    <template
-                        is="dom-repeat"
-                        items="[[contracts]]">
-                        <can-list-item expandable>
-                            <header>
-                                <h5>
-                                    [[item.firstName]] [[item.lastName]],
-                                    <strong>
-                                        <can-number euros="[[item.investment]]"></can-number>
-                                    </strong>
-                                </h5>
-                            </header>
-                            <article>
-                                <ul>
-                                    <li>
-                                        <strong>Email Adres: </strong>
-                                        <a href="mailto:[[item.emailAddress]]">[[item.emailAddress]]</a>
-                                    </li>
-                                    <li>
-                                        <strong>Beloning: </strong>
-                                        [[item.incentive]]
-                                    </li>
-                                    <li>
-                                        <can-button
-                                            download
-                                            on-tap="_downloadFile"
-                                            contract-id="[[item.id]]">
-                                            download contract
-                                        </can-button>
-                                    </li>
-                                </ul>
-                            </article>
-                        </can-list-item>
-                    </template>
-                </can-list>
+        <placetobe-card title="[[item.firstName]] [[item.lastName]]">
+            <article slot="main">
+                <ul>
+                    <li><b>Investering</b>€ [[item.investment]] </li>
+                    <li><b>Email adres:</b> <a href="mailto:[[item.emailAddress]]">[[item.emailAddress]]</a></li>
+                    <li><b>Beloning: </b>[[item.incentive]]</li>
+                    <li><placetobe-button on-tap="_downloadFile" contract-id="[[item.id]]">download contract</placetobe-button>
+                    </li>
+                </ul>
             </article>
-        </can-card>
+        </placetobe-card>
+
+        </template>
 
     </template>
     

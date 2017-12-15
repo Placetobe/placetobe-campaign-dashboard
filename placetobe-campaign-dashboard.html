@@ -731,11 +731,13 @@ Placetobe dashboard for campaigns
           <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'investments')]]">
 
             <article>
-              <p>Hier zie je alle investeerders en hoe je met ze in contact komt.</p>
+              <p>Hier zie je alle investeerders en hoe je met ze in contact komt. Lukt het niet om een contract te downloaden? Check of de pop-up blocker van je browser uit staat.</p>
             </article>
 
-              <can-card expandable>
+              <placetobe-card title="Overzicht investeerders">
+                  <article slot="main">Klik hieronder om een overzicht te downloaden van je investeerders.</article>
 
+                  <div slot="footer">
                   <can-api
                       download-file
                       auth
@@ -750,24 +752,21 @@ Placetobe dashboard for campaigns
                       loading="{{loadingExcel}}">
                   </can-api>
 
-                  <header>Hier download je een overzicht van al je investeerders</header>
+                  <placetobe-button
+                    on-tap="_getExportExcel"
+                    hidden$="[[loadingExcel]]"
+                  >Download Excel bestand</placetobe-button>
+  <!--                       <can-loader hidden$="[[!loadingExcel]]" small>
+                    <h4>Bezig met laden. Een ogenblik a.u.b.</h4>
+                </can-loader>
+  -->
 
-                  <article>
-                      <can-button on-tap="_getExportExcel" hidden$="[[loadingExcel]]">Excel</can-button>
-                      <can-loader hidden$="[[!loadingExcel]]" small>
-                          <h4>Bezig met laden. Een ogenblik a.u.b.</h4>
-                      </can-loader>
-                  </article>
+                  </div>
+              </placetobe-card>
 
-
-                  <footer>
-
-                  </footer>
-
-              </can-card>
-
-              <can-contracts-table campaign-id="[[campaign.id]]">
-              </can-contracts-table>
+              <can-contracts-table
+                campaign-id="[[campaign.id]]"
+              ></can-contracts-table>
 
           </template>
 
