@@ -48,10 +48,13 @@
                     <li><b>Investering</b>€ [[item.investment]] </li>
                     <li><b>Email adres:</b> <a href="mailto:[[item.emailAddress]]">[[item.emailAddress]]</a></li>
                     <li><b>Beloning: </b>[[item.incentive]]</li>
-                    <li><placetobe-button on-tap="_downloadFile" contract-id="[[item.id]]">download contract</placetobe-button>
-                    </li>
                 </ul>
             </article>
+            <placetobe-button
+                slot="footer"
+                on-tap="_downloadFile"
+                contract-id="[[item.id]]"
+            >download contract</placetobe-button>
         </placetobe-card>
 
         </template>
