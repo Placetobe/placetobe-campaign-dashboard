@@ -11,6 +11,7 @@
 <link rel="import" href="../placetobe-textarea-box/placetobe-textarea-box.html">
 <link rel="import" href="../placetobe-campaign-stats-card/placetobe-campaign-stats-card.html">
 <link rel="import" href="../placetobe-button/placetobe-button.html">
+<link rel="import" href="../placetobe-campaign-page/placetobe-campaign-page.html">
 
 <link rel="import" href="../placetobe-navigation-bar/placetobe-navigation-bar.html">
 
@@ -138,6 +139,7 @@ Placetobe dashboard for campaigns
           <placetobe-button link data-name="details">Gegevens</placetobe-button>
           <placetobe-button link data-name="incentives">Beloningen</placetobe-button>
           <placetobe-button link data-name="investments">Investeringen</placetobe-button>
+          <placetobe-button link data-name="preview">Voorvertoning</placetobe-button>
         </iron-selector>
 
       </header>
@@ -781,9 +783,17 @@ Placetobe dashboard for campaigns
 
           </template>
 
+          <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'preview')]]">
+            <placetobe-campaign-page
+              api-endpoint="[[apiEndpoint]]"
+              campaign-id="[[campaign.id]]"
+              access-token="[[accessToken]]"
+            ></placetobe-campaign-page>
+          </template>
+
         </div>
 
-        <aside>
+        <aside hidden$="[[_selectedTabEquals(selectedTab, 'preview')]]">
           <placetobe-campaign-stats-card
             api-endpoint="[[apiEndpoint]]"
             campaign-id="[[campaign.id]]"
@@ -797,10 +807,6 @@ Placetobe dashboard for campaigns
               <article>
                 <h4 hidden$="[[!campaign.started]]">Campagne loopt!</h4>
                 <h4 hidden$="[[campaign.started]]">[[campaignStatusLabel]]</h4>
-                <placetobe-button
-                  href="/campagnes/[[campaign.id]]"
-                  target="_blank"
-                >campagne bekijken</placetobe-button>
               </article>
             </div>
           </placetobe-card>
