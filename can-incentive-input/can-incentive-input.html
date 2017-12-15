@@ -1,5 +1,6 @@
 <!doctype html>
 <link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../placetobe-styles/placetobe-styles.html">
 <link rel="import" href="../../placetobe-card/placetobe-card.html">
 <link rel="import" href="../../placetobe-input-box/placetobe-input-box.html">
 <link rel="import" href="../../placetobe-select-box/placetobe-select-box.html">
@@ -20,11 +21,17 @@
 
         <style>
             placetobe-card {
+                --placetobe-card-color: var(--placetobe-color-gray);
                 margin-bottom: var(--placetobe-margin);
             }
 
             placetobe-button[data-type="delete"] {
                 --placetobe-button-color: var(--placetobe-color-red);
+            }
+
+            placetobe-checkbox {
+                margin: var(--placetobe-margin) 0;
+                text-align: left;
             }
         </style>
 
@@ -48,13 +55,15 @@
                     </placetobe-input-box>
 
                     <placetobe-textarea-box
-                        name="Omschrijving"
-                        value="{{message}}"
-                        placeholder="Geef hier een omschrijving van je beloning"
-                        tip="Met beloningen kun je veel aandacht genereren en twijfelaars over de streep trekken. Verzin een originele manier waarop je crowd over je gaat praten. Maak het exclusief en persoonijk."
-                        required
-                        on-value-changed="_setChanged">
-                    </placetobe-textarea-box>
+                      name="Omschrijving"
+                      value="{{message}}"
+                      placeholder="Geef hier een omschrijving van je beloning"
+                      description="Verleid bezoekers om naar je pagina te gaan. Deze teaser komt op de overzichtenpagina te staan. (max. 140 tekens)"
+                      maxlength="140"
+                      minlength="0"
+                      required
+                      on-value-changed="_setChanged"
+                    ></placetobe-textarea-box>
 
                     <br>
 
