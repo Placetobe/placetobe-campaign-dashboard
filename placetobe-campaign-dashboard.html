@@ -762,12 +762,8 @@ Placetobe dashboard for campaigns
 
                   <placetobe-button
                     on-tap="_getExportExcel"
-                    hidden$="[[loadingExcel]]"
+                    waiting="[[loadingExcel]]"
                   >Download Excel bestand</placetobe-button>
-  <!--                       <can-loader hidden$="[[!loadingExcel]]" small>
-                    <h4>Bezig met laden. Een ogenblik a.u.b.</h4>
-                </can-loader>
-  -->
 
                   </div>
               </placetobe-card>
