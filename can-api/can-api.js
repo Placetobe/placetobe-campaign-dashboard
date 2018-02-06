@@ -11,7 +11,7 @@ Polymer({
         },
         apiEndpoint: {
             type: String,
-            value: 'https://developmentapi.crowdaboutnow.nl/',
+            value: 'https://api.crowdaboutnow.nl/',
             notify: true,
         },
         userId: {
@@ -164,7 +164,7 @@ Polymer({
         };
     },
     getApiURL: function () {
-        var apiurl = (this.apiEndpoint || 'https://developmentapi.crowdaboutnow.nl/') + this.route;
+        var apiurl = (this.apiEndpoint || 'https://api.crowdaboutnow.nl/') + this.route;
         apiurl.replace(':userId', this.userId);
         return apiurl;
     },
