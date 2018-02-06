@@ -786,7 +786,7 @@ Placetobe dashboard for campaigns
           <template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'preview')]]" restamp="true">
             <placetobe-campaign-page
               api-endpoint="[[apiEndpoint]]"
-              campaign-id="[[campaign.id]]"
+              campaign-slug="[[campaign.slug]]"
               access-token="[[accessToken]]"
             ></placetobe-campaign-page>
           </template>
