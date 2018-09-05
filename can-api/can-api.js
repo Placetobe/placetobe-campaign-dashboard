@@ -2,12 +2,15 @@ Polymer({
     is: 'can-api',
     properties: {
         method: String,
+        activeRole: {
+            type: String
+        },
         route: {
             type: String,
         },
         requestheaders: {
             type: String,
-            computed: 'getRequestHeaders(method, route, auth, accessToken)'
+            computed: 'getRequestHeaders(method, route, auth, accessToken, activeRole)'
         },
         apiEndpoint: {
             type: String,
@@ -157,10 +160,11 @@ Polymer({
     _handleDownloadError: function () {
         alert('Het bestand kon niet worden gedownload');
     },
-    getRequestHeaders: function (method, route, auth) {
+    getRequestHeaders: function (method, route, auth, activeRole) {
         if (!auth) return {};
         return {
-            'authorization': 'Bearer ' + this.accessToken
+            'authorization': 'Bearer ' + window.localStorage.CanSessionToken,
+            'activeRole': activeRole
         };
     },
     getApiURL: function () {

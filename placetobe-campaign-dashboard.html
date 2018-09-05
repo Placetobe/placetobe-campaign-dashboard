@@ -112,6 +112,7 @@ Placetobe dashboard for campaigns
 
       <can-api
         auth
+        active-role="entrepreneur"
         id="campaignAjax"
         auto="[[signedIn]]"
         route="entrepreneurs/[[userId]]"
@@ -163,6 +164,7 @@ Placetobe dashboard for campaigns
 
                   <can-form
                     auth
+                    active-role="entrepreneur"
                     access-token="{{accessToken}}"
                     api-endpoint="[[apiEndpoint]]"
                     disabled$="[[!editable]]"
@@ -305,6 +307,7 @@ Placetobe dashboard for campaigns
 
                   <can-api
                     auth
+                    active-role="entrepreneur"
                     auto="[[signedIn]]"
                     api-endpoint="[[apiEndpoint]]"
                     route="campaigns/[[userId]]/publicfiles"
@@ -344,6 +347,7 @@ Placetobe dashboard for campaigns
                 <article slot="main">
                   <can-api
                     auth
+                    active-role="entrepreneur"
                     access-token="{{accessToken}}"
                     api-endpoint="[[apiEndpoint]]"
                     route="entrepreneurs/[[userId]]/publicfiles/[[item.fileNameEncoded]]"
@@ -391,6 +395,7 @@ Placetobe dashboard for campaigns
 
                     <can-form
                       auth
+                      active-role="entrepreneur"
                       access-token="{{accessToken}}"
                       api-endpoint="[[apiEndpoint]]"
                       disabled$="[[!editable]]"
@@ -439,6 +444,7 @@ Placetobe dashboard for campaigns
 
                     <can-form
                       auth
+                      active-role="entrepreneur"
                       access-token="{{accessToken}}"
                       api-endpoint="[[apiEndpoint]]"
                       disabled$="[[!editable]]"
@@ -604,6 +610,7 @@ Placetobe dashboard for campaigns
 
                           <can-form
                               auth
+                              active-role="entrepreneur"
                               access-token="{{accessToken}}"
                               api-endpoint="[[apiEndpoint]]"
                               disabled$="[[!editable]]"
@@ -758,6 +765,7 @@ Placetobe dashboard for campaigns
                   <can-api
                       download-file
                       auth
+                      active-role="entrepreneur"
                       access-token="{{accessToken}}"
                       api-endpoint="[[apiEndpoint]]"
                       content-type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -815,6 +823,7 @@ Placetobe dashboard for campaigns
 
             <can-api
               auth
+              active-role="entrepreneur"
               auto="[[signedIn]]"
               access-token="{{accessToken}}"
               api-endpoint="[[apiEndpoint]]"
@@ -929,6 +938,7 @@ Placetobe dashboard for campaigns
 
         <can-api
             auth
+            active-role="entrepreneur"
             access-token="{{accessToken}}"
             api-endpoint="[[apiEndpoint]]"
             id="update-campaign-geocode"
@@ -960,6 +970,7 @@ Placetobe dashboard for campaigns
 
         <can-api
             auth
+            active-role="entrepreneur"
             access-token="{{accessToken}}"
             api-endpoint="[[apiEndpoint]]"
             id="update-campaign-text"
