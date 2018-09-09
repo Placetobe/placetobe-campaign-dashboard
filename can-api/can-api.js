@@ -2,6 +2,9 @@ Polymer({
     is: 'can-api',
     properties: {
         method: String,
+        activeRole: {
+            type: String
+        },
         route: {
             type: String,
         },
@@ -160,7 +163,8 @@ Polymer({
     getRequestHeaders: function (method, route, auth) {
         if (!auth) return {};
         return {
-            'authorization': 'Bearer ' + this.accessToken
+            'authorization': 'Bearer ' + this.accessToken,
+            'activeRole': this.activeRole
         };
     },
     getApiURL: function () {
