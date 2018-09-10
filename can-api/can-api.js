@@ -163,8 +163,8 @@ Polymer({
     getRequestHeaders: function (method, route, auth, activeRole) {
         if (!auth) return {};
         return {
-            'authorization': 'Bearer ' + window.localStorage.CanSessionToken,
-            'activeRole': activeRole
+            'authorization': 'Bearer ' + this.accessToken,
+            'activeRole': this.activeRole
         };
     },
     getApiURL: function () {
