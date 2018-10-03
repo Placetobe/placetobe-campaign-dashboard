@@ -99,8 +99,14 @@ Placetobe dashboard for campaigns
     }
     </style>
 
-		<placetobe-signin-card hidden$="[[signedIn]]" id="signInCard" api-endpoint="[[apiEndpoint]]" signed-in="{{signedIn}}"
-		 access-token="{{accessToken}}" user-role="ondernemer"></placetobe-signin-card>
+		<placetobe-signin-card 
+			hidden$="[[signedIn]]"
+			id="signInCard" 
+			api-endpoint="[[apiEndpoint]]"
+			signed-in="{{signedIn}}"
+			access-token="{{accessToken}}" 
+			user-role="ondernemer">
+		</placetobe-signin-card>
 
 		<template is="dom-if" if="[[signedIn]]" restamp="true">
 
