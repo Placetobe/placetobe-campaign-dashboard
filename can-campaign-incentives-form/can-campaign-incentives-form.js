@@ -27,6 +27,11 @@ Polymer({
         campaignTypes: {
             type: Array,
             notify: true
+        },
+        activeRole: {
+            type: String,
+            value: null,
+            notify: true
         }
 
     },
