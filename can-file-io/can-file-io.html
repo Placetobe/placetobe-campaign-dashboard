@@ -10,6 +10,7 @@
 
         <can-form
             class="upload-file"
+            active-role="[[activeRole]]"
             auth
             hidesubmitbutton
             disabled$="[[disabled]]"
@@ -37,6 +38,7 @@
         </can-form>
 
         <can-api
+            active-role="[[activeRole]]"
             id="download-file"
             auth
             auto="[[userId]]"

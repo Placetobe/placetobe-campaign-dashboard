@@ -37,12 +37,16 @@ Polymer({
             notify: true
         },
         method: {
-            type: String,
-            value: 'PUT'
+            type: String
         },
         disabledWarning: String,
 
-        disabled: String
+        disabled: String,
+        activeRole: {
+            type: String,
+            value: null,
+            notify: true
+        }
     },
     _handleFile: function() {
         var self = this;
