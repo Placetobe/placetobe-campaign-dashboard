@@ -6,6 +6,8 @@
     <template>
 
         <can-file-io
+            active-role="[[activeRole]]"
+            method="POST"
             disabled$="[[disabled]]"
             disabled-warning="[[disabledWarning]]"
             api-route="entrepreneurs/[[campaignId]]/id"
