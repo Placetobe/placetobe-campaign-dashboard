@@ -25,7 +25,12 @@ Polymer({
 
             },
             disabled: Boolean,
-            disabledWarning: String
+            disabledWarning: String,
+            activeRole: {
+                type: String,
+                value: null,
+                notify: true
+            }
         },
 
         _hasContract: function(dataURI, filename) {
