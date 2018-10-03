@@ -5,6 +5,11 @@ Polymer({
         currentContractId: {
             type: String,
             value: ""
+        },
+        activeRole: {
+            type: String,
+            value: null,
+            notify: true
         }
     },
     _handleResponse: function(evt, data) {
