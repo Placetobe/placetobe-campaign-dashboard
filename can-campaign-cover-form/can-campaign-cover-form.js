@@ -22,6 +22,10 @@ Polymer({
             type: Boolean,
             notify: true,
         },
+        activeRole: {
+            type: String,
+            value: null
+        },
         disabledWarning: String
 
     },
