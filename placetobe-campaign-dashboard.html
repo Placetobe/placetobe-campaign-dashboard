@@ -572,8 +572,14 @@ Placetobe dashboard for campaigns
 										<li>Stap 3: Scan de overeenkomst (duidelijk leesbaar!)</li>
 										<li>Stap 4: Upload je getekende overeenkomst (als jpg, maximum [[maximumContractFileSize]] KB)</li>
 									</ul>
-									<can-campaign-contract-form disabled$="[[!editable]]" disabled-warning="[[notEditableWarning]]" campaign-id="[[campaign.id]]"
-									 valid="{{campaignContractComplete}}" maximum-file-size="{{maximumContractFileSize}}"></can-campaign-contract-form>
+									<can-campaign-contract-form 
+										disabled$="[[!editable]]"
+										active-role="entrepreneur"
+										disabled-warning="[[notEditableWarning]]"
+										campaign-id="[[campaign.id]]"
+										valid="{{campaignContractComplete}}"
+										maximum-file-size="{{maximumContractFileSize}}">
+									</can-campaign-contract-form>
 								</article>
 							</div>
 						</placetobe-card>
@@ -586,11 +592,19 @@ Placetobe dashboard for campaigns
 							<p>Hoe ga je je supporters bedanken?</p>
 						</article>
 
-						<can-campaign-incentives-form api-endpoint="[[apiEndpoint]]" access-token="{{accessToken}}" campaign-started="[[campaign.started]]"
-						 disabled$="[[!editable]]" disabled-warning="[[notEditableWarning]]" campaignid="[[campaign.id]]"
-						 contract-type-ids="[[campaign.contractTypeIds]]" campaign-minimum="[[campaign.minInvestment]]" campaign-maximum="[[campaign.maxInvestment]]"
-						 valid="{{incentivesComplete}}"></can-campaign-incentives-form>
-
+						<can-campaign-incentives-form
+							active-role="entrepreneur"
+							api-endpoint="[[apiEndpoint]]" 
+							access-token="{{accessToken}}"
+							campaign-started="[[campaign.started]]"
+							disabled$="[[!editable]]" 
+							disabled-warning="[[notEditableWarning]]" 
+							campaignid="[[campaign.id]]"
+						 	contract-type-ids="[[campaign.contractTypeIds]]" 
+						 	campaign-minimum="[[campaign.minInvestment]]"
+						  	campaign-maximum="[[campaign.maxInvestment]]"
+						 	valid="{{incentivesComplete}}">
+						</can-campaign-incentives-form>
 					</template>
 
 					<template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'investments')]]">
@@ -604,10 +618,19 @@ Placetobe dashboard for campaigns
 							<article slot="main">Klik hieronder om een overzicht te downloaden van je investeerders.</article>
 
 							<div slot="footer">
-								<can-api download-file auth active-role="entrepreneur" access-token="{{accessToken}}" api-endpoint="[[apiEndpoint]]"
-								 content-type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="export-excel"
-								 downloaded-filename="contracts.xlsx" route="entrepreneurs/[[userId]]/contracts/export/excel" on-response="_excelDownloadSuccess"
-								 method="GET" loading="{{loadingExcel}}">
+								<can-api 
+									download-file
+									auth
+									active-role="entrepreneur"
+									access-token="{{accessToken}}" 
+									api-endpoint="[[apiEndpoint]]"
+									content-type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+									id="export-excel"
+									downloaded-filename="contracts.xlsx"
+									route="entrepreneurs/[[campaignId]]/contracts/export/excel" 
+									on-response="_excelDownloadSuccess"
+									method="GET" 
+									loading="{{loadingExcel}}">
 								</can-api>
 
 								<placetobe-button on-tap="_getExportExcel" waiting="[[loadingExcel]]">Download Excel bestand</placetobe-button>
@@ -643,8 +666,7 @@ Placetobe dashboard for campaigns
 
 						<can-api 
 							auth
-							active-role="entrepreneur" 
-							
+							active-role="entrepreneur"
 							access-token="{{accessToken}}" 
 							api-endpoint="[[apiEndpoint]]" 
 							auto="[[campaignId]]"
