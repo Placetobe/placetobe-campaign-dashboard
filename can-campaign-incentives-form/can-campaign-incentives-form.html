@@ -10,6 +10,7 @@
     <template>
 
         <caas-campaign-types
+            active-role="[[activeRole]]"
             auto-download="[[campaignid]]"
             id="caas-campaign-types"
             campaign-types="{{campaignTypes}}"
@@ -18,6 +19,7 @@
         </caas-campaign-types>
 
         <caas-campaign-incentives
+            active-role="[[activeRole]]"
             auto-download="[[campaignTypes]]"
             id="incentives"
             api-endpoint="[[apiEndpoint]]"

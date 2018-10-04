@@ -263,8 +263,14 @@ Placetobe dashboard for campaigns
 										<li>Houd de foto bij voorkeur in kleur</li>
 									</ul>
 
-									<can-campaign-cover-form disabled$="[[!editable]]" disabled-warning="[[notEditableWarning]]" campaign-id="{{campaign.id}}"
-									 valid="{{coverCompleted}}" maximum-file-size="{{maximumCoverFileSize}}"></can-campaign-cover-form>
+									<can-campaign-cover-form 
+										disabled$="[[!editable]]"
+										active-role="entrepreneur"
+										disabled-warning="[[notEditableWarning]]" 
+										campaign-id="{{campaign.id}}"
+										valid="{{coverCompleted}}"
+										maximum-file-size="{{maximumCoverFileSize}}">
+									</can-campaign-cover-form>
 
 									<p>Houd er rekening mee dat wanneer de foto niet aan de eisen voldoet, we jou kunnen vragen een andere foto
 										uit te kiezen.</p>
@@ -277,8 +283,16 @@ Placetobe dashboard for campaigns
 							<div slot="main">
 								<article>
 
-									<can-api auth active-role="entrepreneur" auto="[[campaignId]]" api-endpoint="[[apiEndpoint]]" route="campaigns/[[campaignId]]/publicfiles"
-									 method="GET" last-response="{{publicFiles}}" access-token="{{accessToken}}"></can-api>
+									<can-api 
+										auth 
+										active-role="entrepreneur"
+										auto="[[campaignId]]" 
+										api-endpoint="[[apiEndpoint]]"
+										route="campaigns/[[campaignId]]/publicfiles"
+										method="GET" 
+										last-response="{{publicFiles}}"
+										access-token="{{accessToken}}">
+									</can-api>
 
 									<p>Wil je extra documenten aanbieden aan je investeerders, bijvoorbeeld je bedrijfsplan? Upload dan hier de
 										bestanden (max. 5 MB per bestand).</p>
@@ -290,9 +304,18 @@ Placetobe dashboard for campaigns
                   <li>Voer deze in als hyperlink aan je campagnetekst.</li>
                   </ul> -->
 
-									<can-file-io disabled$="[[disabled]]" disabled-warning="[[disabledWarning]]" api-route="entrepreneurs/[[userId]]/publicfiles"
-									 user-id="[[campaignId]]" download-data="{{publicFiles}}" on-upload-failed="_uploadFailed" select-button-label="upload bestand"
-									 maximum-file-size="{{maximumFileSize}}" method="POST"></can-file-io>
+									<can-file-io
+										active-role="entrepreneur"
+										disabled$="[[disabled]]" 
+										disabled-warning="[[disabledWarning]]" 
+										api-route="entrepreneurs/[[campaignId]]/publicfiles"
+										user-id="[[campaignId]]" 
+										download-data="{{publicFiles}}" 
+										on-upload-failed="_uploadFailed" 
+										select-button-label="upload bestand"
+										maximum-file-size="{{maximumFileSize}}"
+										method="POST">
+									</can-file-io>
 
 								</article>
 							</div>
@@ -399,13 +422,26 @@ Placetobe dashboard for campaigns
 								<article>
 									<p>Wat zijn de minimale én maximale bedragen die een persoon per keer kan investeren?</p>
 
-									<caas-campaign-types auto-download="[[campaign.id]]" campaign-types="{{campaignTypes}}" api-endpoint="[[apiEndpoint]]"
-									 campaign-id="[[campaign.id]]" access-token="[[accessToken]]" response-status="{{campaignTypesResponseStatus}}">
+									<caas-campaign-types
+										active-role="entrepreneur"
+										auto-download="[[campaign.id]]"
+										campaign-types="{{campaignTypes}}"
+										api-endpoint="[[apiEndpoint]]"
+										campaign-id="[[campaign.id]]" 
+										access-token="[[accessToken]]"
+										response-status="{{campaignTypesResponseStatus}}">
 									</caas-campaign-types>
 
-									<can-form use-with-caas access-token="{{accessToken}}" api-endpoint="[[apiEndpoint]]" disabled$="[[!editable]]"
-									 disabled-warning="[[notEditableWarning]]" id="requiredFunding-form" valid="{{investAmountsCompleted}}"
-									 response-status="[[campaignTypesResponseStatus]]" on-caas-submit="_saveCampaignTypes">
+									<can-form 
+										use-with-caas 
+										access-token="{{accessToken}}" 
+										api-endpoint="[[apiEndpoint]]"
+										disabled$="[[!editable]]"
+										disabled-warning="[[notEditableWarning]]"
+										id="requiredFunding-form"
+										valid="{{investAmountsCompleted}}"
+										response-status="[[campaignTypesResponseStatus]]" 
+										on-caas-submit="_saveCampaignTypes">
 
 										<template is="dom-repeat" items="{{campaignTypes}}" index-as="index">
 
@@ -471,8 +507,14 @@ Placetobe dashboard for campaigns
 							<div slot="main">
 								<article>
 									<p>
-										<can-user-profile-form user-id="[[userId]]" role="ondernemer" disabled$="[[!editable]]" disabled-warning="[[notEditableWarning]]"
-										 is-stocks-campaign="[[isAandelen]]"></can-user-profile-form>
+										<can-user-profile-form
+											user-id="[[campaignId]]"
+											active-role="entrepreneur"
+											role="ondernemer" 
+											disabled$="[[!editable]]" 
+											disabled-warning="[[notEditableWarning]]"
+											is-stocks-campaign="[[isAandelen]]">
+										</can-user-profile-form>
 									</p>
 								</article>
 							</div>
@@ -483,8 +525,14 @@ Placetobe dashboard for campaigns
 								<article>
 									<p>Upload hier een digitale kopie van je paspoort, identiteitskaart of rijbewijs (maximum
 										[[maximumIDFileSize]] KB)</p>
-									<can-campaign-id-form disabled$="[[!editable]]" disabled-warning="[[notEditableWarning]]" campaign-id="[[campaign.id]]"
-									 valid="{{campaignIdComplete}}" maximum-file-size="{{maximumIDFileSize}}"></can-campaign-id-form>
+									<can-campaign-id-form
+										active-role="entrepreneur"
+										disabled$="[[!editable]]"
+										disabled-warning="[[notEditableWarning]]"
+										campaign-id="[[campaign.id]]"
+										valid="{{campaignIdComplete}}" 
+										maximum-file-size="{{maximumIDFileSize}}">
+									</can-campaign-id-form>
 								</article>
 							</div>
 						</placetobe-card>
@@ -493,8 +541,14 @@ Placetobe dashboard for campaigns
 							<div slot="main">
 								<article>
 									<p>Upload hier een digitaal KVK uittreksel (maximum [[maximumKvkFileSize]] KB)</p>
-									<can-campaign-kvk-form disabled$="[[!editable]]" disabled-warning="[[notEditableWarning]]" campaign-id="[[campaign.id]]"
-									 valid="{{campaignKvkComplete}}" maximum-file-size="{{maximumKvkFileSize}}"></can-campaign-kvk-form>
+									<can-campaign-kvk-form 
+										active-role="entrepreneur"
+										disabled$="[[!editable]]" 
+										disabled-warning="[[notEditableWarning]]"
+										campaign-id="[[campaign.id]]"
+										valid="{{campaignKvkComplete}}" 
+										maximum-file-size="{{maximumKvkFileSize}}">
+									</can-campaign-kvk-form>
 								</article>
 							</div>
 						</placetobe-card>
@@ -518,8 +572,14 @@ Placetobe dashboard for campaigns
 										<li>Stap 3: Scan de overeenkomst (duidelijk leesbaar!)</li>
 										<li>Stap 4: Upload je getekende overeenkomst (als jpg, maximum [[maximumContractFileSize]] KB)</li>
 									</ul>
-									<can-campaign-contract-form disabled$="[[!editable]]" disabled-warning="[[notEditableWarning]]" campaign-id="[[campaign.id]]"
-									 valid="{{campaignContractComplete}}" maximum-file-size="{{maximumContractFileSize}}"></can-campaign-contract-form>
+									<can-campaign-contract-form 
+										disabled$="[[!editable]]"
+										active-role="entrepreneur"
+										disabled-warning="[[notEditableWarning]]"
+										campaign-id="[[campaign.id]]"
+										valid="{{campaignContractComplete}}"
+										maximum-file-size="{{maximumContractFileSize}}">
+									</can-campaign-contract-form>
 								</article>
 							</div>
 						</placetobe-card>
@@ -532,11 +592,19 @@ Placetobe dashboard for campaigns
 							<p>Hoe ga je je supporters bedanken?</p>
 						</article>
 
-						<can-campaign-incentives-form api-endpoint="[[apiEndpoint]]" access-token="{{accessToken}}" campaign-started="[[campaign.started]]"
-						 disabled$="[[!editable]]" disabled-warning="[[notEditableWarning]]" campaignid="[[campaign.id]]"
-						 contract-type-ids="[[campaign.contractTypeIds]]" campaign-minimum="[[campaign.minInvestment]]" campaign-maximum="[[campaign.maxInvestment]]"
-						 valid="{{incentivesComplete}}"></can-campaign-incentives-form>
-
+						<can-campaign-incentives-form
+							active-role="entrepreneur"
+							api-endpoint="[[apiEndpoint]]" 
+							access-token="{{accessToken}}"
+							campaign-started="[[campaign.started]]"
+							disabled$="[[!editable]]" 
+							disabled-warning="[[notEditableWarning]]" 
+							campaignid="[[campaign.id]]"
+						 	contract-type-ids="[[campaign.contractTypeIds]]" 
+						 	campaign-minimum="[[campaign.minInvestment]]"
+						  	campaign-maximum="[[campaign.maxInvestment]]"
+						 	valid="{{incentivesComplete}}">
+						</can-campaign-incentives-form>
 					</template>
 
 					<template is="dom-if" if="[[_selectedTabEquals(selectedTab, 'investments')]]">
@@ -550,10 +618,19 @@ Placetobe dashboard for campaigns
 							<article slot="main">Klik hieronder om een overzicht te downloaden van je investeerders.</article>
 
 							<div slot="footer">
-								<can-api download-file auth active-role="entrepreneur" access-token="{{accessToken}}" api-endpoint="[[apiEndpoint]]"
-								 content-type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="export-excel"
-								 downloaded-filename="contracts.xlsx" route="entrepreneurs/[[userId]]/contracts/export/excel" on-response="_excelDownloadSuccess"
-								 method="GET" loading="{{loadingExcel}}">
+								<can-api 
+									download-file
+									auth
+									active-role="entrepreneur"
+									access-token="{{accessToken}}" 
+									api-endpoint="[[apiEndpoint]]"
+									content-type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+									id="export-excel"
+									downloaded-filename="contracts.xlsx"
+									route="entrepreneurs/[[campaignId]]/contracts/export/excel" 
+									on-response="_excelDownloadSuccess"
+									method="GET" 
+									loading="{{loadingExcel}}">
 								</can-api>
 
 								<placetobe-button on-tap="_getExportExcel" waiting="[[loadingExcel]]">Download Excel bestand</placetobe-button>
@@ -561,7 +638,7 @@ Placetobe dashboard for campaigns
 							</div>
 						</placetobe-card>
 
-						<can-contracts-table campaign-id="[[campaign.id]]"></can-contracts-table>
+						<can-contracts-table active-role="entrepreneur" campaign-id="[[campaign.id]]"></can-contracts-table>
 
 					</template>
 
@@ -589,8 +666,7 @@ Placetobe dashboard for campaigns
 
 						<can-api 
 							auth
-							active-role="entrepreneur" 
-							
+							active-role="entrepreneur"
 							access-token="{{accessToken}}" 
 							api-endpoint="[[apiEndpoint]]" 
 							auto="[[campaignId]]"

@@ -25,7 +25,12 @@ Polymer({
             notify: true
         },
         disabledWarning: String,
-        disabled: String
+        disabled: String,
+        activeRole: {
+            type: String,
+            value: null,
+            notify: true
+        }
     },
 
     _hasKvk: function(dataURI, filename) {

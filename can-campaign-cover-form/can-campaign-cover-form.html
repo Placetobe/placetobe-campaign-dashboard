@@ -11,6 +11,8 @@
         </style>
         
         <can-file-io
+            active-role="[[activeRole]]"
+            method="PUT"
             disabled$="[[disabled]]"
             disabled-warning="[[disabledWarning]]"
             api-route="entrepreneurs/[[campaignId]]/cover"
