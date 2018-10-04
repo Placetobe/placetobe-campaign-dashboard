@@ -130,12 +130,12 @@ Polymer({
         return this.fire('response', this.lastResponse || null);
     },
     _handleError: function (evt, data) {
-        if (this.downloadFile) {
-            return this._handleDownloadError(evt, data);
-        }
+        if (this.downloadFile) return this._handleDownloadError(evt, data);
         this._setStatusResponseObject('failed', 'Opslaan mislukt' + ((data.request.xhr.response && data.request.xhr.response.error[0]) ? ': '+data.request.xhr.response.error[0].message : ''));
         this.fire('error', data.request.xhr.response);
-        if(data.request.xhr.response.error[0].message == 'Access token not issued for this ip address') this.fire('iron-signal', {name: 'ip-changed', data: data.request.xhr.response.error});
+        if (data.request.xhr.response != null && (data.request.xhr.response.error[0].message == 'Access token not issued for this ip address')) {
+            return this.fire('iron-signal', {name: 'ip-changed', data: data.request.xhr.response.error});   
+        }
     },
     _handleDownload: function (evt, data) {
         var _self = this;
