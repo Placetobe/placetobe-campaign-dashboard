@@ -62,8 +62,7 @@ Polymer({
             type: String,
             value: 'Je kunt deze informatie niet wijzigen omdat je campagne is gestart.',
             notify: true
-        },
-        activeRole: String
+        }
     },
 
     _saveSuccess: function(evt, data) {
