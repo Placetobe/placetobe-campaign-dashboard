@@ -19,6 +19,7 @@
         <can-api
             auth
             route="[[APIRoute]]"
+            active-role="[[activeRole]]"
             method="GET"
             auto="[[userId]]"
             last-response="{{data}}"
@@ -26,6 +27,7 @@
 
         <can-form
             auth
+            active-role="[[activeRole]]"
             disabled$="[[disabled]]"
             valid="{{valid}}"
             formdata="{{data}}"
